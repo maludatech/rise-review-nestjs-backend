@@ -1,0 +1,14 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/rise-review"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Campaign {
+  id   Int    @id @default(autoincrement())
+  name String
+}
