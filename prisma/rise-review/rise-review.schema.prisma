@@ -1,0 +1,325 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/rise-review"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enumerations
+enum Role {
+  user
+  admin
+}
+
+enum SubscriptionStatus {
+  inactive
+  trialing
+  active
+  past_due
+  canceled
+  unpaid
+}
+
+enum SubscriptionPlan {
+  starter
+  growth
+  enterprise
+}
+
+enum ReviewSource {
+  google
+  opentable
+  covermanager
+}
+
+enum FeedbackChannel {
+  whatsapp
+  sms
+  email
+}
+
+enum CampaignChannel {
+  email
+  whatsapp
+}
+
+enum CampaignStatus {
+  draft
+  pending
+  sent
+  paused
+}
+
+enum CampaignTargetGroup {
+  all
+  recent
+  vip
+  hasNoReview
+  positiveOnly
+  allNoReview
+  pastWeekNoReview
+  pastMonthNoReview
+}
+
+enum CampaignTiming {
+  SEVEN_DAYS
+  THREE_WEEKS
+  ONE_MONTH
+  CUSTOM
+}
+
+enum ActivityType {
+  message_sent
+  customer_reply
+  ai_response
+  review
+  system
+  campaign
+  reservation
+}
+
+enum ActivityStatus {
+  pending
+  sent
+  replied
+  approved
+  intercepting
+}
+
+enum Verdict {
+  positive
+  negative
+}
+// Models
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String?
+  name      String?
+  role      Role     @default(user)
+  language  String   @default("es")
+  emailVerified Boolean @default(false)
+  image     String?
+
+  verificationToken        String?
+  verificationTokenExpires  DateTime?
+
+  trialStartDate        DateTime?
+  trialEndDate          DateTime?
+  isOnTrial             Boolean  @default(false)
+  trialEmailCount      Int      @default(0)
+  trialEmailWindowStart DateTime?
+
+  stripeCustomerId            String?
+  stripeSubscriptionId        String?
+  subscriptionStatus         SubscriptionStatus @default(trialing)
+  subscriptionPlan           SubscriptionPlan?
+  subscriptionCurrentPeriodEnd DateTime?
+  subscriptionCancelAtPeriodEnd Boolean @default(false)
+
+  businessUrl String?
+
+  googleBusiness Json?
+  googleVerification Json?
+
+  twilioIntegration Json?
+
+  covermanagerConnected Boolean @default(false)
+  theForkConnected Boolean @default(false)
+  openTableConnected Boolean @default(false)
+  doctolibConnected Boolean @default(false)
+
+  funnelConfigured Boolean @default(false)
+  onboardingComplete Boolean @default(false)
+  onboardingData Json?
+
+  notificationPreferences Json?
+
+  reviews Review[]
+  campaigns Campaign[]
+  customers Customer[]
+  feedbacks Feedback[]
+  activities Activity[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Review {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  rating Int
+  comment String?
+
+  source ReviewSource
+
+  responded Boolean @default(false)
+  responseText String?
+
+  reviewerName String?
+  reviewDate DateTime?
+  reviewUrl String?
+
+  sentNotification Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, responded])
+
+  @@unique([userId, reviewerName, reviewDate])
+}
+
+model Customer {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name String
+
+  email String?
+  phone String?
+
+  lastVisitDate DateTime?
+
+  hasReview Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  feedbacks Feedback[]
+  campaignRecipients CampaignRecipient[]
+
+  @@unique([userId, email])
+  @@unique([userId, phone])
+
+  @@index([userId])
+}
+
+model Feedback {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  customerId Int?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+
+  customerName  String?
+  customerPhone String?
+  customerEmail String?
+
+  channel FeedbackChannel
+
+  message String
+
+  read Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, read])
+}
+
+model Campaign {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name String
+
+  channel CampaignChannel @default(email)
+
+  platforms String[] @default(["google"])
+
+  targetGroup CampaignTargetGroup @default(hasNoReview)
+
+  timing CampaignTiming @default(SEVEN_DAYS)
+
+  language String @default("en")
+
+  reviewLinks Json?
+
+  date DateTime?
+
+  isScheduled Boolean @default(false)
+
+  tone String?
+  message String?
+
+  recipients Int @default(0)
+  excluded   Int @default(0)
+
+  recipientsList CampaignRecipient[]
+
+  sent      Int @default(0)
+  opened    Int @default(0)
+  responded Int @default(0)
+
+  status CampaignStatus @default(draft)
+
+  useGPT Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+model CampaignRecipient {
+  id Int @id @default(autoincrement())
+
+  campaignId Int
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  included Boolean
+
+  @@index([campaignId])
+}
+
+model Activity {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type ActivityType
+
+  sourceId String?
+  sourceCustomerId String?
+
+  platform String?
+  customer String?
+
+  rating String?
+  preview String?
+
+  status ActivityStatus?
+
+  interceptedRating Int?
+
+  verdict Verdict?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([type])
+  @@index([status])
+}
