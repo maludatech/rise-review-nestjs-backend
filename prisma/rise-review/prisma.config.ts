@@ -9,6 +9,6 @@ export default defineConfig({
   },
 
   migrations: {
-    path: './prisma/migrations/rise-review',
+    path: './migrations/rise-review',
   },
 });
