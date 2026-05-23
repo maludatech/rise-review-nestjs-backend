@@ -1,6 +1,6 @@
 generator client {
   provider     = "prisma-client"
-  output       = "../src/generated/rise-review"
+  output       = "../../src/generated/rise-review"
   moduleFormat = "cjs"
 }
 
@@ -144,7 +144,7 @@ model User {
   customers Customer[]
   feedbacks Feedback[]
   activities Activity[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
