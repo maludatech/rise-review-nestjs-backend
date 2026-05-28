@@ -103,7 +103,6 @@ export class OutreachService {
       }
     }
   }
-
   async sendFollowUpEmails(limit = 10): Promise<void> {
     const leads = await this.prisma.lead.findMany({
       where: {
