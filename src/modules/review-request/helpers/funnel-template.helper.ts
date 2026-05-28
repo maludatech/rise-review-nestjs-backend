@@ -1,7 +1,7 @@
 import type {
   OnboardingData,
   FunnelChannel,
-} from '../../common/types/onboarding-data.type';
+} from '../../../common/types/onboarding-data.type';
 
 export function getFunnelTemplates(
   user: { onboardingData?: OnboardingData | null },

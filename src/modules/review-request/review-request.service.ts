@@ -1,15 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import React from 'react';
 import { RiseReviewPrismaService } from '../../prisma/rise-review/prisma.service';
-import { WhatsAppService } from './whatsapp.service';
+import { WhatsAppService } from './services/whatsapp.service';
 import { EmailService } from '../email/email.service';
+import { AiService } from './services/ai.service';
+import { ScraperService } from './services/scraper.service';
+import { CampaignEmailService } from './services/campaign-email.service';
 import { getVisitDelayMs } from './helpers/delay.helper';
-import { getFunnelTemplates } from './template.service';
+import { getFunnelTemplates } from './helpers/funnel-template.helper';
 import CampaignEmail from '../../../emails/CampaignEmail';
 import { buildReviewLinks } from './helpers/review-link.helper';
+import { User, Activity, Customer } from '../../generated/rise-review/client';
 import type { TwilioIntegration } from '../../common/types/twilio-integration.type';
 import type { OnboardingData } from '../../common/types/onboarding-data.type';
-import { User, Activity, Customer } from '../../generated/rise-review/client';
+import {
+  GoogleBusiness,
+  NotificationPreferences,
+  OnboardingDataReview,
+  ReviewEntity,
+  SafeUser,
+  ScrapedReview,
+} from '../../common/types/review.type';
 
 @Injectable()
 export class ReviewRequestService {
@@ -17,6 +28,9 @@ export class ReviewRequestService {
     private readonly prisma: RiseReviewPrismaService,
     private readonly whatsapp: WhatsAppService,
     private readonly email: EmailService,
+    private ai: AiService,
+    private scraper: ScraperService,
+    private campaignEmail: CampaignEmailService,
   ) {}
 
   async processReservationReviewRequests() {
@@ -149,5 +163,129 @@ export class ReviewRequestService {
     }
 
     return null;
+  }
+
+  async scrapeAndSaveReviews(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new Error('User not found');
+
+    const googleBusiness = user.googleBusiness as GoogleBusiness | null;
+
+    const url = googleBusiness?.url ?? user.businessUrl;
+
+    if (!url) return 0;
+
+    const reviews = (await this.scraper.scrapeGoogleReviews(
+      url,
+    )) as ScrapedReview[];
+
+    let saved = 0;
+
+    for (const r of reviews) {
+      const rating = Number(r.stars ?? r.rating ?? 0);
+      if (rating < 1 || rating > 5) continue;
+
+      const reviewerName = typeof r.name === 'string' ? r.name : null;
+      const comment = typeof r.text === 'string' ? r.text : '';
+
+      const existing = await this.prisma.review.findFirst({
+        where: {
+          userId,
+          reviewerName,
+          reviewDate: r.publishedAtDate,
+        },
+      });
+
+      if (existing) continue;
+
+      const review = await this.prisma.review.create({
+        data: {
+          userId,
+          rating,
+          comment,
+          reviewerName,
+          reviewDate: r.publishedAtDate ? new Date(r.publishedAtDate) : null,
+          source: 'google',
+          responded: false,
+          sentNotification: false,
+        },
+      });
+
+      saved++;
+
+      await this.sendNotifications(user, review);
+      await this.autoRespond(review.id, review);
+    }
+
+    return saved;
+  }
+
+  async autoRespond(reviewId: number, review: ReviewEntity) {
+    const existing = await this.prisma.review.findUnique({
+      where: { id: reviewId },
+    });
+
+    if (existing?.responseText) return;
+
+    const response = await this.ai.generateReviewResponse({
+      ...review,
+      comment: review.comment ?? '',
+    });
+
+    await this.prisma.review.update({
+      where: { id: reviewId },
+      data: { responseText: response },
+    });
+
+    await this.prisma.campaign.updateMany({
+      where: { userId: review.userId },
+      data: {
+        responded: { increment: 1 },
+      },
+    });
+  }
+
+  private async sendNotifications(user: SafeUser, review: ReviewEntity) {
+    const notifications =
+      user.notificationPreferences as NotificationPreferences | null;
+
+    const onboarding = user.onboardingData as OnboardingDataReview | null;
+
+    const googleBusiness = user.googleBusiness as GoogleBusiness | null;
+
+    const businessName =
+      onboarding?.businessInfo?.businessName ??
+      googleBusiness?.name ??
+      user.name ??
+      'Business';
+
+    const customerName = user.name ?? 'Customer';
+
+    if (notifications?.email?.newReview) {
+      await this.campaignEmail.sendCampaignEmail({
+        businessName,
+        customerEmail: user.email,
+        customerName,
+        senderName: 'Rise Review',
+        replyToEmail: user.email,
+        positiveUrl: '',
+        negativeUrl: '',
+      });
+    }
+
+    if (review.rating <= 2 && notifications?.email?.negativeReview) {
+      await this.campaignEmail.sendCampaignEmail({
+        businessName,
+        customerEmail: user.email,
+        customerName,
+        senderName: 'Rise Review Alerts',
+        replyToEmail: user.email,
+        positiveUrl: '',
+        negativeUrl: '',
+      });
+    }
   }
 }
