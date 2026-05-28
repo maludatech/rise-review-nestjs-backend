@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import React from 'react';
 import { RiseReviewPrismaService } from '../../prisma/rise-review/prisma.service';
 import { WhatsAppService } from './whatsapp.service';
-import { EmailService } from './email.service';
+import { EmailService } from '../email/email.service';
 import { getVisitDelayMs } from './helpers/delay.helper';
 import { getFunnelTemplates } from './template.service';
+import CampaignEmail from '../../../emails/CampaignEmail';
 import { buildReviewLinks } from './helpers/review-link.helper';
 import type { TwilioIntegration } from '../../common/types/twilio-integration.type';
 import type { OnboardingData } from '../../common/types/onboarding-data.type';
@@ -56,7 +58,12 @@ export class ReviewRequestService {
 
     if (!customer || customer.hasReview) return;
 
-    const templates = getFunnelTemplates(user, 'email');
+    const templates = getFunnelTemplates(
+      {
+        onboardingData: user.onboardingData as OnboardingData | null,
+      },
+      'email',
+    );
 
     const links = buildReviewLinks(
       user.id,
@@ -125,14 +132,17 @@ export class ReviewRequestService {
     }
 
     if (customer.email) {
-      await this.email.sendReviewEmail({
+      await this.email.sendEmail({
         to: customer.email,
-        businessName: user.name ?? 'Business',
-        customerName: firstName,
-        senderName: `Team ${user.name ?? 'Business'}`,
-        replyToEmail: user.email,
-        positiveUrl: links.positiveUrl,
-        negativeUrl: links.negativeUrl,
+        subject: `How was your visit to ${user.name ?? 'Business'}?`,
+        reactComponent: React.createElement(CampaignEmail, {
+          businessName: user.name ?? 'Business',
+          reviewLink: links.positiveUrl,
+          negativeUrl: links.negativeUrl,
+          customerName: firstName,
+          senderName: `Team ${user.name ?? 'Business'}`,
+          replyToEmail: user.email,
+        }),
       });
 
       return 'email';

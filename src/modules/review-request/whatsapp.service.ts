@@ -1,5 +1,7 @@
+import { Injectable } from '@nestjs/common';
 import { Twilio } from 'twilio';
 
+@Injectable()
 export class WhatsAppService {
   private baseClient: Twilio;
 

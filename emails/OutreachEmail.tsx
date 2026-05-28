@@ -9,23 +9,23 @@ import {
   Hr,
   Link,
   Img,
-} from "@react-email/components";
+} from '@react-email/components';
 
 interface OutreachEmailProps {
   businessName?: string;
-  googleRating?: string;
+  googleRating?: number | undefined;
   landingUrl?: string;
   unsubscribeUrl?: string;
 }
 
 const currentYear = new Date().getFullYear();
-const BRAND = "#ea2069";
+const BRAND = '#ea2069';
 
 export default function OutreachEmail({
-  businessName = "there",
-  googleRating = "4.5",
-  landingUrl = "https://app.risereview.io",
-  unsubscribeUrl = "#",
+  businessName = 'there',
+  googleRating = 4.5,
+  landingUrl = 'https://app.risereview.io',
+  unsubscribeUrl = '#',
 }: OutreachEmailProps) {
   return (
     <Html>
@@ -48,38 +48,39 @@ export default function OutreachEmail({
         `}</style>
       </Head>
       <Preview>
-        Your {googleRating}★ rating could be even higher — here's how.
+        Your {googleRating.toString()}★ rating could be even higher — here's
+        how.
       </Preview>
 
       <Body
         className="email-body"
         style={{
-          backgroundColor: "#f1f1f5",
+          backgroundColor: '#f1f1f5',
           fontFamily:
             "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
-          margin: "0",
-          padding: "32px 16px",
+          margin: '0',
+          padding: '32px 16px',
         }}
       >
-        <Container style={{ maxWidth: "560px", margin: "0 auto" }}>
+        <Container style={{ maxWidth: '560px', margin: '0 auto' }}>
           <div
             className="email-card"
             style={{
-              backgroundColor: "#ffffff",
-              borderRadius: "20px",
-              border: "1px solid rgba(0,0,0,0.07)",
-              overflow: "hidden",
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              border: '1px solid rgba(0,0,0,0.07)',
+              overflow: 'hidden',
               boxShadow:
-                "0 1px 3px rgba(0,0,0,0.05), 0 20px 50px rgba(0,0,0,0.08)",
+                '0 1px 3px rgba(0,0,0,0.05), 0 20px 50px rgba(0,0,0,0.08)',
             }}
           >
             {/* ── Header ── */}
             <div
               className="email-header"
               style={{
-                backgroundColor: "#fafafa",
-                borderBottom: "1px solid rgba(0,0,0,0.06)",
-                padding: "20px 28px",
+                backgroundColor: '#fafafa',
+                borderBottom: '1px solid rgba(0,0,0,0.06)',
+                padding: '20px 28px',
               }}
             >
               <table
@@ -87,10 +88,10 @@ export default function OutreachEmail({
                 cellPadding={0}
                 cellSpacing={0}
                 border={0}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <tr>
-                  <td style={{ verticalAlign: "middle", whiteSpace: "nowrap" }}>
+                  <td style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                     <table
                       role="presentation"
                       cellPadding={0}
@@ -100,13 +101,13 @@ export default function OutreachEmail({
                       <tr>
                         <td
                           style={{
-                            verticalAlign: "middle",
-                            width: "36px",
-                            height: "36px",
+                            verticalAlign: 'middle',
+                            width: '36px',
+                            height: '36px',
                             backgroundColor: BRAND,
-                            borderRadius: "10px",
-                            textAlign: "center",
-                            padding: "0",
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            padding: '0',
                           }}
                         >
                           <Img
@@ -114,23 +115,23 @@ export default function OutreachEmail({
                             alt="Rise Review"
                             width="20"
                             height="20"
-                            style={{ display: "block", margin: "8px" }}
+                            style={{ display: 'block', margin: '8px' }}
                           />
                         </td>
                         <td
                           style={{
-                            verticalAlign: "middle",
-                            paddingLeft: "10px",
+                            verticalAlign: 'middle',
+                            paddingLeft: '10px',
                           }}
                         >
                           <Text
                             className="text-primary"
                             style={{
-                              margin: "0",
-                              fontSize: "15px",
-                              fontWeight: "600",
-                              color: "#111827",
-                              letterSpacing: "-0.01em",
+                              margin: '0',
+                              fontSize: '15px',
+                              fontWeight: '600',
+                              color: '#111827',
+                              letterSpacing: '-0.01em',
                             }}
                           >
                             Rise Review
@@ -141,19 +142,19 @@ export default function OutreachEmail({
                   </td>
                   <td
                     style={{
-                      verticalAlign: "middle",
-                      textAlign: "right",
-                      width: "100%",
+                      verticalAlign: 'middle',
+                      textAlign: 'right',
+                      width: '100%',
                     }}
                   >
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
-                        letterSpacing: "0.02em",
+                        letterSpacing: '0.02em',
                       }}
                     >
                       OUTREACH
@@ -164,14 +165,14 @@ export default function OutreachEmail({
             </div>
 
             {/* ── Body ── */}
-            <div style={{ padding: "40px 28px 32px" }}>
+            <div style={{ padding: '40px 28px 32px' }}>
               {/* Greeting */}
               <Text
                 className="text-secondary"
                 style={{
-                  margin: "0 0 8px 0",
-                  fontSize: "14px",
-                  color: "#6b7280",
+                  margin: '0 0 8px 0',
+                  fontSize: '14px',
+                  color: '#6b7280',
                 }}
               >
                 Hi {businessName} —
@@ -180,12 +181,12 @@ export default function OutreachEmail({
               <Text
                 className="text-primary"
                 style={{
-                  margin: "0 0 24px 0",
-                  fontSize: "22px",
-                  fontWeight: "700",
-                  color: "#0f172a",
-                  letterSpacing: "-0.03em",
-                  lineHeight: "1.2",
+                  margin: '0 0 24px 0',
+                  fontSize: '22px',
+                  fontWeight: '700',
+                  color: '#0f172a',
+                  letterSpacing: '-0.03em',
+                  lineHeight: '1.2',
                 }}
               >
                 Your {googleRating}★ rating is great.
@@ -196,15 +197,15 @@ export default function OutreachEmail({
               <Text
                 className="text-secondary"
                 style={{
-                  margin: "0 0 24px 0",
-                  fontSize: "15px",
-                  lineHeight: "1.75",
-                  color: "#4b5563",
+                  margin: '0 0 24px 0',
+                  fontSize: '15px',
+                  lineHeight: '1.75',
+                  color: '#4b5563',
                 }}
               >
                 We found your business on Google and noticed you're already
-                doing well. With{" "}
-                <strong style={{ color: "#0f172a" }}>Rise Review</strong>,
+                doing well. With{' '}
+                <strong style={{ color: '#0f172a' }}>Rise Review</strong>,
                 businesses like yours collect more positive reviews on autopilot
                 — bringing in more customers and climbing the rankings.
               </Text>
@@ -215,33 +216,33 @@ export default function OutreachEmail({
                 cellPadding={0}
                 cellSpacing={0}
                 border={0}
-                style={{ width: "100%", marginBottom: "28px" }}
+                style={{ width: '100%', marginBottom: '28px' }}
               >
                 <tr>
                   {/* Current rating */}
                   <td
-                    style={{ paddingRight: "10px", verticalAlign: "top" }}
+                    style={{ paddingRight: '10px', verticalAlign: 'top' }}
                     width="42%"
                   >
                     <div
                       className="rating-card"
                       style={{
-                        backgroundColor: "rgba(234,32,105,0.07)",
-                        borderRadius: "14px",
-                        border: "1px solid rgba(234,32,105,0.15)",
-                        padding: "18px 18px 16px",
-                        textAlign: "center",
+                        backgroundColor: 'rgba(234,32,105,0.07)',
+                        borderRadius: '14px',
+                        border: '1px solid rgba(234,32,105,0.15)',
+                        padding: '18px 18px 16px',
+                        textAlign: 'center',
                       }}
                     >
                       <Text
                         className="text-muted"
                         style={{
-                          margin: "0 0 6px 0",
-                          fontSize: "11px",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.1em",
-                          color: "#9ca3af",
-                          fontWeight: "600",
+                          margin: '0 0 6px 0',
+                          fontSize: '11px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em',
+                          color: '#9ca3af',
+                          fontWeight: '600',
                           fontFamily: "'DM Mono', monospace",
                         }}
                       >
@@ -249,22 +250,22 @@ export default function OutreachEmail({
                       </Text>
                       <Text
                         style={{
-                          margin: "0",
-                          fontSize: "44px",
-                          fontWeight: "700",
+                          margin: '0',
+                          fontSize: '44px',
+                          fontWeight: '700',
                           color: BRAND,
-                          letterSpacing: "-0.04em",
-                          lineHeight: "1",
+                          letterSpacing: '-0.04em',
+                          lineHeight: '1',
                         }}
                       >
                         {googleRating}
                       </Text>
                       <Text
                         style={{
-                          margin: "6px 0 0 0",
-                          fontSize: "16px",
+                          margin: '6px 0 0 0',
+                          fontSize: '16px',
                           color: BRAND,
-                          letterSpacing: "2px",
+                          letterSpacing: '2px',
                         }}
                       >
                         ★★★★★
@@ -272,9 +273,9 @@ export default function OutreachEmail({
                       <Text
                         className="text-muted"
                         style={{
-                          margin: "8px 0 0 0",
-                          fontSize: "11px",
-                          color: "#9ca3af",
+                          margin: '8px 0 0 0',
+                          fontSize: '11px',
+                          color: '#9ca3af',
                           fontFamily: "'DM Mono', monospace",
                         }}
                       >
@@ -284,44 +285,44 @@ export default function OutreachEmail({
                   </td>
 
                   {/* Features */}
-                  <td style={{ verticalAlign: "top" }} width="58%">
+                  <td style={{ verticalAlign: 'top' }} width="58%">
                     <table
                       role="presentation"
                       cellPadding={0}
                       cellSpacing={0}
                       border={0}
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                     >
                       {[
                         {
-                          label: "Auto review requests",
-                          sub: "Sent after each visit",
+                          label: 'Auto review requests',
+                          sub: 'Sent after each visit',
                         },
-                        { label: "Multi-platform", sub: "Google, Yelp & more" },
+                        { label: 'Multi-platform', sub: 'Google, Yelp & more' },
                         {
-                          label: "Real-time alerts",
-                          sub: "For every new review",
+                          label: 'Real-time alerts',
+                          sub: 'For every new review',
                         },
                       ].map((f, i) => (
                         <tr key={i}>
-                          <td style={{ paddingBottom: i < 2 ? "8px" : "0" }}>
+                          <td style={{ paddingBottom: i < 2 ? '8px' : '0' }}>
                             <div
                               className="feature-card"
                               style={{
-                                backgroundColor: "#f8fafc",
-                                borderRadius: "10px",
-                                border: "1px solid rgba(0,0,0,0.06)",
-                                padding: "10px 14px",
+                                backgroundColor: '#f8fafc',
+                                borderRadius: '10px',
+                                border: '1px solid rgba(0,0,0,0.06)',
+                                padding: '10px 14px',
                               }}
                             >
                               <Text
                                 className="text-primary"
                                 style={{
-                                  margin: "0",
-                                  fontSize: "13px",
-                                  fontWeight: "600",
-                                  color: "#0f172a",
-                                  lineHeight: "1.3",
+                                  margin: '0',
+                                  fontSize: '13px',
+                                  fontWeight: '600',
+                                  color: '#0f172a',
+                                  lineHeight: '1.3',
                                 }}
                               >
                                 {f.label}
@@ -329,9 +330,9 @@ export default function OutreachEmail({
                               <Text
                                 className="text-muted"
                                 style={{
-                                  margin: "2px 0 0 0",
-                                  fontSize: "11px",
-                                  color: "#9ca3af",
+                                  margin: '2px 0 0 0',
+                                  fontSize: '11px',
+                                  color: '#9ca3af',
                                   fontFamily: "'DM Mono', monospace",
                                 }}
                               >
@@ -347,19 +348,19 @@ export default function OutreachEmail({
               </table>
 
               {/* ── CTA ── */}
-              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <Button
                   href={landingUrl}
                   style={{
                     backgroundColor: BRAND,
-                    color: "#ffffff",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    padding: "13px 32px",
-                    borderRadius: "10px",
-                    textDecoration: "none",
-                    display: "inline-block",
-                    letterSpacing: "-0.01em",
+                    color: '#ffffff',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    padding: '13px 32px',
+                    borderRadius: '10px',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    letterSpacing: '-0.01em',
                   }}
                 >
                   Get Started Today →
@@ -369,16 +370,16 @@ export default function OutreachEmail({
               <Text
                 className="text-muted"
                 style={{
-                  fontSize: "12px",
-                  color: "#9ca3af",
-                  textAlign: "center",
-                  margin: "0",
+                  fontSize: '12px',
+                  color: '#9ca3af',
+                  textAlign: 'center',
+                  margin: '0',
                 }}
               >
-                Or visit:{" "}
+                Or visit:{' '}
                 <Link
                   href={landingUrl}
-                  style={{ color: BRAND, textDecoration: "none" }}
+                  style={{ color: BRAND, textDecoration: 'none' }}
                 >
                   {landingUrl}
                 </Link>
@@ -387,23 +388,23 @@ export default function OutreachEmail({
               <Hr
                 className="divider"
                 style={{
-                  borderColor: "rgba(0,0,0,0.07)",
-                  margin: "28px 0 20px",
+                  borderColor: 'rgba(0,0,0,0.07)',
+                  margin: '28px 0 20px',
                 }}
               />
 
               <Text
                 className="text-muted"
                 style={{
-                  fontSize: "12px",
-                  color: "#9ca3af",
-                  textAlign: "center",
-                  margin: "0",
+                  fontSize: '12px',
+                  color: '#9ca3af',
+                  textAlign: 'center',
+                  margin: '0',
                 }}
               >
                 <Link
                   href={unsubscribeUrl}
-                  style={{ color: "#9ca3af", textDecoration: "underline" }}
+                  style={{ color: '#9ca3af', textDecoration: 'underline' }}
                 >
                   Unsubscribe from future emails
                 </Link>
@@ -414,9 +415,9 @@ export default function OutreachEmail({
             <div
               className="email-footer"
               style={{
-                backgroundColor: "#f8fafc",
-                borderTop: "1px solid rgba(0,0,0,0.06)",
-                padding: "16px 28px",
+                backgroundColor: '#f8fafc',
+                borderTop: '1px solid rgba(0,0,0,0.06)',
+                padding: '16px 28px',
               }}
             >
               <table
@@ -424,29 +425,29 @@ export default function OutreachEmail({
                 cellPadding={0}
                 cellSpacing={0}
                 border={0}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <tr>
                   <td>
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
                       }}
                     >
                       © {currentYear} Rise Review
                     </Text>
                   </td>
-                  <td style={{ textAlign: "right" }}>
+                  <td style={{ textAlign: 'right' }}>
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
                       }}
                     >
@@ -464,8 +465,8 @@ export default function OutreachEmail({
 }
 
 OutreachEmail.PreviewProps = {
-  businessName: "La Bella Café",
-  googleRating: "4.5",
-  landingUrl: "https://app.risereview.io",
-  unsubscribeUrl: "https://app.risereview.io/unsubscribe",
+  businessName: 'La Bella Café',
+  googleRating: 4.5,
+  landingUrl: 'https://app.risereview.io',
+  unsubscribeUrl: 'https://app.risereview.io/unsubscribe',
 } as OutreachEmailProps;
