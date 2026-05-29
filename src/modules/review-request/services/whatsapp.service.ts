@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Twilio } from 'twilio';
-import type { WhatsAppUser } from '../../../common/types/whatsapp.types';
+import type { WhatsAppUser } from '../../../common/types/whatsapp.type';
 
 @Injectable()
 export class WhatsAppService {

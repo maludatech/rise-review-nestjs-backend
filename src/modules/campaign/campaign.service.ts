@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RiseReviewPrismaService } from '../../prisma/rise-review/prisma.service';
-import { AiService } from './services/ai.service';
-import { LinkService } from './services/link.service';
-import { WhatsappService } from '../review-request/whatsapp.service';
-import { CampaignEmailService } from './services/campaign-email.service';
+import { AiService } from '../review-request/services/ai.service';
+import { WhatsAppService } from '../review-request/services/whatsapp.service';
+import { CampaignEmailService } from '../review-request/services/campaign-email.service';
+import { buildReviewLinks } from '../../common/helpers/link.helper';
+import type { OnboardingData } from '../../common/types/onboarding-data.type';
 
 @Injectable()
 export class CampaignService {
@@ -12,12 +13,11 @@ export class CampaignService {
   constructor(
     private prisma: RiseReviewPrismaService,
     private ai: AiService,
-    private links: LinkService,
-    private whatsapp: WhatsappService,
+    private whatsapp: WhatsAppService,
     private email: CampaignEmailService,
   ) {}
 
-  async sendCampaignMessages(campaignId: string) {
+  async sendCampaignMessages(campaignId: number) {
     const campaign = await this.prisma.campaign.findUnique({
       where: { id: campaignId },
     });
@@ -38,24 +38,25 @@ export class CampaignService {
 
     let sent = 0;
 
+    const onboarding = user.onboardingData as OnboardingData | null;
+
+    const businessName =
+      user.name ?? onboarding?.businessInfo?.businessName ?? 'Business';
+
     for (const customer of customers) {
       try {
-        const { positiveUrl, negativeUrl } = this.links.build(
+        const { positiveUrl, negativeUrl } = buildReviewLinks(
           user.id,
           customer.id,
           campaign.id,
-          campaign.channel as any,
+          campaign.channel,
         );
 
-        const firstName = customer.name?.split(' ')[0] || 'there';
+        const firstName = customer.name.split(' ')[0] || 'there';
 
-        // 🤖 AI message
         const message = await this.ai.generateCampaignMessage({
           firstName,
-          businessName:
-            user.businessName ||
-            user.onboardingData?.businessName ||
-            'Business',
+          businessName,
           tone: campaign.tone ?? undefined,
         });
 
@@ -64,12 +65,13 @@ export class CampaignService {
           `😊 Great experience → ${positiveUrl}\n` +
           `😞 Not so great → ${negativeUrl}`;
 
-        if (campaign.channel === 'email') {
+        // EMAIL
+        if (campaign.channel === 'email' && customer.email) {
           await this.email.sendCampaignEmail({
-            businessName: user.businessName,
+            businessName,
             customerEmail: customer.email,
             customerName: firstName,
-            senderName: `Team ${user.businessName}`,
+            senderName: `Team ${businessName}`,
             replyToEmail: user.email,
             positiveUrl,
             negativeUrl,
@@ -78,7 +80,8 @@ export class CampaignService {
           sent++;
         }
 
-        if (campaign.channel === 'whatsapp') {
+        // WHATSAPP
+        if (campaign.channel === 'whatsapp' && customer.phone) {
           const from = this.whatsapp.getWhatsappFrom(user);
 
           if (!from) continue;
@@ -95,7 +98,7 @@ export class CampaignService {
       } catch (err: any) {
         this.logger.error(
           `Campaign error for customer ${customer.id}`,
-          err.message,
+          err?.message ?? 'Unknown error',
         );
       }
     }

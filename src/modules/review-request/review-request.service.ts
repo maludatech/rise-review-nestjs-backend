@@ -9,7 +9,7 @@ import { CampaignEmailService } from './services/campaign-email.service';
 import { getVisitDelayMs } from './helpers/delay.helper';
 import { getFunnelTemplates } from './helpers/funnel-template.helper';
 import CampaignEmail from '../../../emails/CampaignEmail';
-import { buildReviewLinks } from './helpers/review-link.helper';
+import { buildReviewLinks } from '../../common/helpers/link.helper';
 import { User, Activity, Customer } from '../../generated/rise-review/client';
 import type { TwilioIntegration } from '../../common/types/twilio-integration.type';
 import type { OnboardingData } from '../../common/types/onboarding-data.type';
