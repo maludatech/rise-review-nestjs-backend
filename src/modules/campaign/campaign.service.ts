@@ -5,6 +5,8 @@ import { WhatsAppService } from '../review-request/services/whatsapp.service';
 import { CampaignEmailService } from '../review-request/services/campaign-email.service';
 import { buildReviewLinks } from '../../common/helpers/link.helper';
 import type { OnboardingData } from '../../common/types/onboarding-data.type';
+import type { TwilioIntegration } from '../../common/types/twilio-integration.type';
+import type { Campaign } from '../../generated/rise-review/client';
 
 @Injectable()
 export class CampaignService {
@@ -38,10 +40,18 @@ export class CampaignService {
 
     let sent = 0;
 
-    const onboarding = user.onboardingData as OnboardingData | null;
+    const onboarding = (user.onboardingData ?? undefined) as
+      | OnboardingData
+      | undefined;
 
     const businessName =
       user.name ?? onboarding?.businessInfo?.businessName ?? 'Business';
+
+    const from = this.whatsapp.getWhatsappFrom({
+      twilioIntegration: (user.twilioIntegration ?? undefined) as
+        | TwilioIntegration
+        | undefined,
+    });
 
     for (const customer of customers) {
       try {
@@ -78,16 +88,17 @@ export class CampaignService {
           });
 
           sent++;
+          continue;
         }
 
         // WHATSAPP
-        if (campaign.channel === 'whatsapp' && customer.phone) {
-          const from = this.whatsapp.getWhatsappFrom(user);
-
-          if (!from) continue;
-
+        if (campaign.channel === 'whatsapp' && customer.phone && from) {
           await this.whatsapp.sendMessage({
-            user,
+            user: {
+              twilioIntegration: (user.twilioIntegration ?? undefined) as
+                | TwilioIntegration
+                | undefined,
+            },
             to: customer.phone,
             from,
             body: finalMessage,
@@ -95,10 +106,12 @@ export class CampaignService {
 
           sent++;
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
+
         this.logger.error(
           `Campaign error for customer ${customer.id}`,
-          err?.message ?? 'Unknown error',
+          message,
         );
       }
     }
@@ -114,7 +127,7 @@ export class CampaignService {
     return sent;
   }
 
-  private buildQuery(campaign: any) {
+  private buildQuery(campaign: Campaign) {
     const base = {
       userId: campaign.userId,
     };
