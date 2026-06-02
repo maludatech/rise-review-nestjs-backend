@@ -4,8 +4,7 @@ import { AiService } from '../review-request/services/ai.service';
 import { WhatsAppService } from '../review-request/services/whatsapp.service';
 import { CampaignEmailService } from '../review-request/services/campaign-email.service';
 import { buildReviewLinks } from '../../common/helpers/link.helper';
-import type { OnboardingData } from '../../common/types/onboarding-data.type';
-import type { TwilioIntegration } from '../../common/types/twilio-integration.type';
+import { mapUser } from '../../common/mappers/user.mapper';
 import type { Campaign } from '../../generated/rise-review/client';
 
 @Injectable()
@@ -26,11 +25,13 @@ export class CampaignService {
 
     if (!campaign) throw new Error('Campaign not found');
 
-    const user = await this.prisma.user.findUnique({
+    const rawUser = await this.prisma.user.findUnique({
       where: { id: campaign.userId },
     });
 
-    if (!user) throw new Error('User not found');
+    if (!rawUser) throw new Error('User not found');
+
+    const user = mapUser(rawUser);
 
     const customers = await this.prisma.customer.findMany({
       where: this.buildQuery(campaign),
@@ -40,19 +41,14 @@ export class CampaignService {
 
     let sent = 0;
 
-    const onboarding = (user.onboardingData ?? undefined) as
-      | OnboardingData
-      | undefined;
-
     const businessName =
-      user.name ?? onboarding?.businessInfo?.businessName ?? 'Business';
+      user.name ??
+      user.onboardingData?.businessInfo?.businessName ??
+      'Business';
 
     const from = this.whatsapp.getWhatsappFrom({
-      twilioIntegration: (user.twilioIntegration ?? undefined) as
-        | TwilioIntegration
-        | undefined,
+      twilioIntegration: user.twilioIntegration,
     });
-
     for (const customer of customers) {
       try {
         const { positiveUrl, negativeUrl } = buildReviewLinks(
@@ -62,20 +58,39 @@ export class CampaignService {
           campaign.channel,
         );
 
-        const firstName = customer.name.split(' ')[0] || 'there';
+        const firstName = customer.name?.split(' ')[0] || 'there';
 
-        const message = await this.ai.generateCampaignMessage({
-          firstName,
-          businessName,
-          tone: campaign.tone ?? undefined,
-        });
+        // ─────────────────────────────────────────────
+        // MESSAGE GENERATION (RESTORED MONGO BEHAVIOR)
+        // ─────────────────────────────────────────────
+        let message: string;
+
+        if (campaign.useGPT) {
+          message = await this.ai.generateCampaignMessage({
+            firstName,
+            businessName,
+            tone: campaign.tone ?? undefined,
+            language: campaign.language ?? 'en',
+          });
+        } else {
+          const raw = campaign.message ?? '';
+
+          message = raw
+            .replace(/{name}/gi, firstName)
+            .replace(/{FirstName}/gi, firstName)
+            .replace(/{business_name}/gi, businessName)
+            .replace(/{BusinessName}/gi, businessName)
+            .replace(/{review_link}/gi, positiveUrl);
+        }
 
         const finalMessage =
           `${message}\n\n` +
           `😊 Great experience → ${positiveUrl}\n` +
           `😞 Not so great → ${negativeUrl}`;
 
-        // EMAIL
+        // ─────────────────────────────────────────────
+        // EMAIL CHANNEL
+        // ─────────────────────────────────────────────
         if (campaign.channel === 'email' && customer.email) {
           await this.email.sendCampaignEmail({
             businessName,
@@ -91,13 +106,13 @@ export class CampaignService {
           continue;
         }
 
-        // WHATSAPP
+        // ─────────────────────────────────────────────
+        // WHATSAPP CHANNEL
+        // ─────────────────────────────────────────────
         if (campaign.channel === 'whatsapp' && customer.phone && from) {
           await this.whatsapp.sendMessage({
             user: {
-              twilioIntegration: (user.twilioIntegration ?? undefined) as
-                | TwilioIntegration
-                | undefined,
+              twilioIntegration: user.twilioIntegration,
             },
             to: customer.phone,
             from,

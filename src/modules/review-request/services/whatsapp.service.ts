@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Twilio } from 'twilio';
 import type { WhatsAppUser } from '../../../common/types/whatsapp.type';
 
+const WHATSAPP_PROPAGATION_HOURS = 12;
+
 @Injectable()
 export class WhatsAppService {
-  private baseClient: Twilio;
+  private readonly baseClient: Twilio;
 
   constructor() {
     this.baseClient = new Twilio(
@@ -13,20 +15,45 @@ export class WhatsAppService {
     );
   }
 
-  getUserClient(subaccountSid?: string) {
+  getUserClient(subaccountSid?: string): Twilio {
     return subaccountSid
       ? new Twilio(
           process.env.TWILIO_ACCOUNT_SID,
           process.env.TWILIO_AUTH_TOKEN,
-          { accountSid: subaccountSid },
+          {
+            accountSid: subaccountSid,
+          },
         )
       : this.baseClient;
   }
 
   getWhatsappFrom(user: WhatsAppUser): string | null {
-    const w = user.twilioIntegration?.whatsapp;
+    const whatsapp = user.twilioIntegration?.whatsapp;
 
-    return w?.connected && w?.phoneNumber ? w.phoneNumber : null;
+    return whatsapp?.connected && whatsapp.phoneNumber
+      ? whatsapp.phoneNumber
+      : null;
+  }
+
+  assertReady(user: WhatsAppUser): void {
+    const whatsapp = user.twilioIntegration?.whatsapp;
+
+    if (!whatsapp?.connectedAt) {
+      return;
+    }
+
+    const connectedAt = new Date(whatsapp.connectedAt);
+
+    const hoursSinceConnected =
+      (Date.now() - connectedAt.getTime()) / (1000 * 60 * 60);
+
+    if (hoursSinceConnected < WHATSAPP_PROPAGATION_HOURS) {
+      const remaining = Math.ceil(
+        WHATSAPP_PROPAGATION_HOURS - hoursSinceConnected,
+      );
+
+      throw new BadRequestException(`WHATSAPP_NOT_READY:${remaining}`);
+    }
   }
 
   async sendMessage(params: {

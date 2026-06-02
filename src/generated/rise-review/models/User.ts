@@ -29,11 +29,13 @@ export type AggregateUser = {
 export type UserAvgAggregateOutputType = {
   id: number | null
   trialEmailCount: number | null
+  smsDailyCount: number | null
 }
 
 export type UserSumAggregateOutputType = {
   id: number | null
   trialEmailCount: number | null
+  smsDailyCount: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -59,6 +61,9 @@ export type UserMinAggregateOutputType = {
   subscriptionCurrentPeriodEnd: Date | null
   subscriptionCancelAtPeriodEnd: boolean | null
   businessUrl: string | null
+  smsLastSentAt: Date | null
+  smsDailyCount: number | null
+  smsDailyWindowStart: Date | null
   covermanagerConnected: boolean | null
   theForkConnected: boolean | null
   openTableConnected: boolean | null
@@ -92,6 +97,9 @@ export type UserMaxAggregateOutputType = {
   subscriptionCurrentPeriodEnd: Date | null
   subscriptionCancelAtPeriodEnd: boolean | null
   businessUrl: string | null
+  smsLastSentAt: Date | null
+  smsDailyCount: number | null
+  smsDailyWindowStart: Date | null
   covermanagerConnected: boolean | null
   theForkConnected: boolean | null
   openTableConnected: boolean | null
@@ -127,6 +135,9 @@ export type UserCountAggregateOutputType = {
   businessUrl: number
   googleBusiness: number
   googleVerification: number
+  smsLastSentAt: number
+  smsDailyCount: number
+  smsDailyWindowStart: number
   twilioIntegration: number
   covermanagerConnected: number
   theForkConnected: number
@@ -145,11 +156,13 @@ export type UserCountAggregateOutputType = {
 export type UserAvgAggregateInputType = {
   id?: true
   trialEmailCount?: true
+  smsDailyCount?: true
 }
 
 export type UserSumAggregateInputType = {
   id?: true
   trialEmailCount?: true
+  smsDailyCount?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -175,6 +188,9 @@ export type UserMinAggregateInputType = {
   subscriptionCurrentPeriodEnd?: true
   subscriptionCancelAtPeriodEnd?: true
   businessUrl?: true
+  smsLastSentAt?: true
+  smsDailyCount?: true
+  smsDailyWindowStart?: true
   covermanagerConnected?: true
   theForkConnected?: true
   openTableConnected?: true
@@ -208,6 +224,9 @@ export type UserMaxAggregateInputType = {
   subscriptionCurrentPeriodEnd?: true
   subscriptionCancelAtPeriodEnd?: true
   businessUrl?: true
+  smsLastSentAt?: true
+  smsDailyCount?: true
+  smsDailyWindowStart?: true
   covermanagerConnected?: true
   theForkConnected?: true
   openTableConnected?: true
@@ -243,6 +262,9 @@ export type UserCountAggregateInputType = {
   businessUrl?: true
   googleBusiness?: true
   googleVerification?: true
+  smsLastSentAt?: true
+  smsDailyCount?: true
+  smsDailyWindowStart?: true
   twilioIntegration?: true
   covermanagerConnected?: true
   theForkConnected?: true
@@ -368,6 +390,9 @@ export type UserGroupByOutputType = {
   businessUrl: string | null
   googleBusiness: runtime.JsonValue | null
   googleVerification: runtime.JsonValue | null
+  smsLastSentAt: Date | null
+  smsDailyCount: number
+  smsDailyWindowStart: Date | null
   twilioIntegration: runtime.JsonValue | null
   covermanagerConnected: boolean
   theForkConnected: boolean
@@ -429,6 +454,9 @@ export type UserWhereInput = {
   businessUrl?: Prisma.StringNullableFilter<"User"> | string | null
   googleBusiness?: Prisma.JsonNullableFilter<"User">
   googleVerification?: Prisma.JsonNullableFilter<"User">
+  smsLastSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  smsDailyCount?: Prisma.IntFilter<"User"> | number
+  smsDailyWindowStart?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   twilioIntegration?: Prisma.JsonNullableFilter<"User">
   covermanagerConnected?: Prisma.BoolFilter<"User"> | boolean
   theForkConnected?: Prisma.BoolFilter<"User"> | boolean
@@ -472,6 +500,9 @@ export type UserOrderByWithRelationInput = {
   businessUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   googleBusiness?: Prisma.SortOrderInput | Prisma.SortOrder
   googleVerification?: Prisma.SortOrderInput | Prisma.SortOrder
+  smsLastSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  smsDailyCount?: Prisma.SortOrder
+  smsDailyWindowStart?: Prisma.SortOrderInput | Prisma.SortOrder
   twilioIntegration?: Prisma.SortOrderInput | Prisma.SortOrder
   covermanagerConnected?: Prisma.SortOrder
   theForkConnected?: Prisma.SortOrder
@@ -518,6 +549,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   businessUrl?: Prisma.StringNullableFilter<"User"> | string | null
   googleBusiness?: Prisma.JsonNullableFilter<"User">
   googleVerification?: Prisma.JsonNullableFilter<"User">
+  smsLastSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  smsDailyCount?: Prisma.IntFilter<"User"> | number
+  smsDailyWindowStart?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   twilioIntegration?: Prisma.JsonNullableFilter<"User">
   covermanagerConnected?: Prisma.BoolFilter<"User"> | boolean
   theForkConnected?: Prisma.BoolFilter<"User"> | boolean
@@ -561,6 +595,9 @@ export type UserOrderByWithAggregationInput = {
   businessUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   googleBusiness?: Prisma.SortOrderInput | Prisma.SortOrder
   googleVerification?: Prisma.SortOrderInput | Prisma.SortOrder
+  smsLastSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  smsDailyCount?: Prisma.SortOrder
+  smsDailyWindowStart?: Prisma.SortOrderInput | Prisma.SortOrder
   twilioIntegration?: Prisma.SortOrderInput | Prisma.SortOrder
   covermanagerConnected?: Prisma.SortOrder
   theForkConnected?: Prisma.SortOrder
@@ -607,6 +644,9 @@ export type UserScalarWhereWithAggregatesInput = {
   businessUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   googleBusiness?: Prisma.JsonNullableWithAggregatesFilter<"User">
   googleVerification?: Prisma.JsonNullableWithAggregatesFilter<"User">
+  smsLastSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  smsDailyCount?: Prisma.IntWithAggregatesFilter<"User"> | number
+  smsDailyWindowStart?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   twilioIntegration?: Prisma.JsonNullableWithAggregatesFilter<"User">
   covermanagerConnected?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   theForkConnected?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
@@ -644,6 +684,9 @@ export type UserCreateInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -687,6 +730,9 @@ export type UserUncheckedCreateInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -729,6 +775,9 @@ export type UserUpdateInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -772,6 +821,9 @@ export type UserUncheckedUpdateInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -815,6 +867,9 @@ export type UserCreateManyInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -852,6 +907,9 @@ export type UserUpdateManyMutationInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -890,6 +948,9 @@ export type UserUncheckedUpdateManyInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -928,6 +989,9 @@ export type UserCountOrderByAggregateInput = {
   businessUrl?: Prisma.SortOrder
   googleBusiness?: Prisma.SortOrder
   googleVerification?: Prisma.SortOrder
+  smsLastSentAt?: Prisma.SortOrder
+  smsDailyCount?: Prisma.SortOrder
+  smsDailyWindowStart?: Prisma.SortOrder
   twilioIntegration?: Prisma.SortOrder
   covermanagerConnected?: Prisma.SortOrder
   theForkConnected?: Prisma.SortOrder
@@ -944,6 +1008,7 @@ export type UserCountOrderByAggregateInput = {
 export type UserAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   trialEmailCount?: Prisma.SortOrder
+  smsDailyCount?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -969,6 +1034,9 @@ export type UserMaxOrderByAggregateInput = {
   subscriptionCurrentPeriodEnd?: Prisma.SortOrder
   subscriptionCancelAtPeriodEnd?: Prisma.SortOrder
   businessUrl?: Prisma.SortOrder
+  smsLastSentAt?: Prisma.SortOrder
+  smsDailyCount?: Prisma.SortOrder
+  smsDailyWindowStart?: Prisma.SortOrder
   covermanagerConnected?: Prisma.SortOrder
   theForkConnected?: Prisma.SortOrder
   openTableConnected?: Prisma.SortOrder
@@ -1002,6 +1070,9 @@ export type UserMinOrderByAggregateInput = {
   subscriptionCurrentPeriodEnd?: Prisma.SortOrder
   subscriptionCancelAtPeriodEnd?: Prisma.SortOrder
   businessUrl?: Prisma.SortOrder
+  smsLastSentAt?: Prisma.SortOrder
+  smsDailyCount?: Prisma.SortOrder
+  smsDailyWindowStart?: Prisma.SortOrder
   covermanagerConnected?: Prisma.SortOrder
   theForkConnected?: Prisma.SortOrder
   openTableConnected?: Prisma.SortOrder
@@ -1015,6 +1086,7 @@ export type UserMinOrderByAggregateInput = {
 export type UserSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   trialEmailCount?: Prisma.SortOrder
+  smsDailyCount?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -1156,6 +1228,9 @@ export type UserCreateWithoutReviewsInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1198,6 +1273,9 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1255,6 +1333,9 @@ export type UserUpdateWithoutReviewsInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1297,6 +1378,9 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1338,6 +1422,9 @@ export type UserCreateWithoutCustomersInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1380,6 +1467,9 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1437,6 +1527,9 @@ export type UserUpdateWithoutCustomersInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1479,6 +1572,9 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1520,6 +1616,9 @@ export type UserCreateWithoutFeedbacksInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1562,6 +1661,9 @@ export type UserUncheckedCreateWithoutFeedbacksInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1619,6 +1721,9 @@ export type UserUpdateWithoutFeedbacksInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1661,6 +1766,9 @@ export type UserUncheckedUpdateWithoutFeedbacksInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1702,6 +1810,9 @@ export type UserCreateWithoutCampaignsInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1744,6 +1855,9 @@ export type UserUncheckedCreateWithoutCampaignsInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1801,6 +1915,9 @@ export type UserUpdateWithoutCampaignsInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1843,6 +1960,9 @@ export type UserUncheckedUpdateWithoutCampaignsInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1884,6 +2004,9 @@ export type UserCreateWithoutActivitiesInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1926,6 +2049,9 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   businessUrl?: string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Date | string | null
+  smsDailyCount?: number
+  smsDailyWindowStart?: Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -1983,6 +2109,9 @@ export type UserUpdateWithoutActivitiesInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2025,6 +2154,9 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   businessUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleBusiness?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   googleVerification?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  smsLastSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  smsDailyCount?: Prisma.IntFieldUpdateOperationsInput | number
+  smsDailyWindowStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   twilioIntegration?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   covermanagerConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   theForkConnected?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2134,6 +2266,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   businessUrl?: boolean
   googleBusiness?: boolean
   googleVerification?: boolean
+  smsLastSentAt?: boolean
+  smsDailyCount?: boolean
+  smsDailyWindowStart?: boolean
   twilioIntegration?: boolean
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -2178,6 +2313,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   businessUrl?: boolean
   googleBusiness?: boolean
   googleVerification?: boolean
+  smsLastSentAt?: boolean
+  smsDailyCount?: boolean
+  smsDailyWindowStart?: boolean
   twilioIntegration?: boolean
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -2216,6 +2354,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   businessUrl?: boolean
   googleBusiness?: boolean
   googleVerification?: boolean
+  smsLastSentAt?: boolean
+  smsDailyCount?: boolean
+  smsDailyWindowStart?: boolean
   twilioIntegration?: boolean
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -2254,6 +2395,9 @@ export type UserSelectScalar = {
   businessUrl?: boolean
   googleBusiness?: boolean
   googleVerification?: boolean
+  smsLastSentAt?: boolean
+  smsDailyCount?: boolean
+  smsDailyWindowStart?: boolean
   twilioIntegration?: boolean
   covermanagerConnected?: boolean
   theForkConnected?: boolean
@@ -2267,7 +2411,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "language" | "emailVerified" | "image" | "verificationToken" | "verificationTokenExpires" | "trialStartDate" | "trialEndDate" | "isOnTrial" | "trialEmailCount" | "trialEmailWindowStart" | "stripeCustomerId" | "stripeSubscriptionId" | "subscriptionStatus" | "subscriptionPlan" | "subscriptionCurrentPeriodEnd" | "subscriptionCancelAtPeriodEnd" | "businessUrl" | "googleBusiness" | "googleVerification" | "twilioIntegration" | "covermanagerConnected" | "theForkConnected" | "openTableConnected" | "doctolibConnected" | "funnelConfigured" | "onboardingComplete" | "onboardingData" | "notificationPreferences" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "language" | "emailVerified" | "image" | "verificationToken" | "verificationTokenExpires" | "trialStartDate" | "trialEndDate" | "isOnTrial" | "trialEmailCount" | "trialEmailWindowStart" | "stripeCustomerId" | "stripeSubscriptionId" | "subscriptionStatus" | "subscriptionPlan" | "subscriptionCurrentPeriodEnd" | "subscriptionCancelAtPeriodEnd" | "businessUrl" | "googleBusiness" | "googleVerification" | "smsLastSentAt" | "smsDailyCount" | "smsDailyWindowStart" | "twilioIntegration" | "covermanagerConnected" | "theForkConnected" | "openTableConnected" | "doctolibConnected" | "funnelConfigured" | "onboardingComplete" | "onboardingData" | "notificationPreferences" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   campaigns?: boolean | Prisma.User$campaignsArgs<ExtArgs>
@@ -2313,6 +2457,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     businessUrl: string | null
     googleBusiness: runtime.JsonValue | null
     googleVerification: runtime.JsonValue | null
+    smsLastSentAt: Date | null
+    smsDailyCount: number
+    smsDailyWindowStart: Date | null
     twilioIntegration: runtime.JsonValue | null
     covermanagerConnected: boolean
     theForkConnected: boolean
@@ -2776,6 +2923,9 @@ export interface UserFieldRefs {
   readonly businessUrl: Prisma.FieldRef<"User", 'String'>
   readonly googleBusiness: Prisma.FieldRef<"User", 'Json'>
   readonly googleVerification: Prisma.FieldRef<"User", 'Json'>
+  readonly smsLastSentAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly smsDailyCount: Prisma.FieldRef<"User", 'Int'>
+  readonly smsDailyWindowStart: Prisma.FieldRef<"User", 'DateTime'>
   readonly twilioIntegration: Prisma.FieldRef<"User", 'Json'>
   readonly covermanagerConnected: Prisma.FieldRef<"User", 'Boolean'>
   readonly theForkConnected: Prisma.FieldRef<"User", 'Boolean'>

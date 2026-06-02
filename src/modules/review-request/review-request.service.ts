@@ -223,29 +223,74 @@ export class ReviewRequestService {
     return saved;
   }
 
-  async autoRespond(reviewId: number, review: ReviewEntity) {
+  async autoRespond(reviewId: number, review: ReviewEntity): Promise<string> {
     const existing = await this.prisma.review.findUnique({
       where: { id: reviewId },
+      select: { responseText: true, userId: true },
     });
 
-    if (existing?.responseText) return;
+    if (existing?.responseText) return existing.responseText;
 
-    const response = await this.ai.generateReviewResponse({
-      ...review,
-      comment: review.comment ?? '',
-    });
+    // ─────────────────────────────────────────────
+    // AI GENERATION (with fallback safety)
+    // ─────────────────────────────────────────────
+    let responseMessage: string;
 
-    await this.prisma.review.update({
-      where: { id: reviewId },
-      data: { responseText: response },
-    });
+    try {
+      responseMessage = await this.ai.generateReviewResponse({
+        comment: review.comment ?? '',
+        rating: review.rating,
+      });
+    } catch {
+      // hard fallback (never fail silently)
+      if (review.rating >= 4) {
+        responseMessage =
+          'Thank you for your kind feedback! We truly appreciate your support.';
+      } else if (review.rating === 3) {
+        responseMessage =
+          "Thanks for your feedback! We're always working to improve.";
+      } else {
+        responseMessage =
+          "We're sorry about your experience. We take feedback seriously and would love to make things right.";
+      }
+    }
 
-    await this.prisma.campaign.updateMany({
-      where: { userId: review.userId },
+    // ─────────────────────────────────────────────
+    // ATOMIC UPDATE GUARD (prevents double responses)
+    // ─────────────────────────────────────────────
+    const updated = await this.prisma.review.updateMany({
+      where: {
+        id: reviewId,
+        responseText: null,
+      },
       data: {
-        responded: { increment: 1 },
+        responseText: responseMessage,
       },
     });
+
+    if (updated.count === 0) {
+      // already processed by another worker
+      return responseMessage;
+    }
+
+    // ─────────────────────────────────────────────
+    // FIX: increment ONLY latest campaign (not all)
+    // ─────────────────────────────────────────────
+    const latestCampaign = await this.prisma.campaign.findFirst({
+      where: { userId: review.userId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (latestCampaign) {
+      await this.prisma.campaign.update({
+        where: { id: latestCampaign.id },
+        data: {
+          responded: { increment: 1 },
+        },
+      });
+    }
+
+    return responseMessage;
   }
 
   private async sendNotifications(user: SafeUser, review: ReviewEntity) {

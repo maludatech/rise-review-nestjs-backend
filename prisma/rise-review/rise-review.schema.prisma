@@ -124,9 +124,13 @@ model User {
   businessUrl String?
 
   googleBusiness Json?
-  googleVerification Json?
+googleVerification Json?
 
-  twilioIntegration Json?
+smsLastSentAt DateTime?
+smsDailyCount Int @default(0)
+smsDailyWindowStart DateTime?
+
+twilioIntegration Json?
 
   covermanagerConnected Boolean @default(false)
   theForkConnected Boolean @default(false)
