@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RiseReviewPrismaService } from '../../prisma/rise-review/prisma.service';
+import { RiseReviewPrismaService } from '../prisma/rise-review/prisma.service';
 import { AiService } from '../review-request/services/ai.service';
 import { WhatsAppService } from '../review-request/services/whatsapp.service';
 import { CampaignEmailService } from '../review-request/services/campaign-email.service';

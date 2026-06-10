@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RiseReviewPrismaService } from '../../src/prisma/rise-review/prisma.service';
-import { InternalPrismaService } from '../../src/prisma/internal/prisma.service';
+import { RiseReviewPrismaService } from '../modules/prisma/rise-review/prisma.service';
+import { InternalPrismaService } from '../modules/prisma/internal/prisma.service';
 import { EmailService } from '../modules/email/email.service';
 import { ReviewRequestService } from '../modules/review-request/review-request.service';
 import { OutreachService } from '../modules/outreach/outreach.service';
+import { CampaignService } from '../modules/campaign/campaign.service';
 import DailyPerformanceReportEmail from '../../emails/DailyPerformanceReportEmail';
 import WeeklyReportEmail from '../../emails/WeeklyReportEmail';
 
@@ -17,6 +18,7 @@ export class CronService {
     private readonly emailService: EmailService,
     private readonly reviewRequestService: ReviewRequestService,
     private readonly outreachService: OutreachService,
+    private readonly campaignService: CampaignService,
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)

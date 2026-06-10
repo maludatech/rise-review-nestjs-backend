@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InternalPrismaService as PrismaService } from '../../prisma/internal/prisma.service';
+import { InternalPrismaService as PrismaService } from '../prisma/internal/prisma.service';
 import { OutreachService } from '../outreach/outreach.service';
 import { enrichPendingLeads } from '../leads/enrichment.service';
 

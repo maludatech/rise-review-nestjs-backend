@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import React from 'react';
-import { RiseReviewPrismaService } from '../../prisma/rise-review/prisma.service';
+import { RiseReviewPrismaService } from '../prisma/rise-review/prisma.service';
 import { WhatsAppService } from './services/whatsapp.service';
 import { EmailService } from '../email/email.service';
 import { AiService } from './services/ai.service';

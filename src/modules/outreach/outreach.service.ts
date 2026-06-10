@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import React from 'react';
 import { randomBytes } from 'crypto';
-import { InternalPrismaService } from '../../prisma/internal/prisma.service';
+import { InternalPrismaService } from '../prisma/internal/prisma.service';
 import { EmailService } from '../email/email.service';
 import FollowUpEmail from '../../../emails/FollowUpEmail';
 import OutreachEmail from '../../../emails/OutreachEmail';

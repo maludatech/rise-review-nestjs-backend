@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { RiseReviewPrismaService } from '../../prisma/rise-review/prisma.service';
+import { RiseReviewPrismaService } from '../../modules/prisma/rise-review/prisma.service';
 import { mapUserSafe } from '../mappers/user.mapper';
 import { REQUIRE_PLAN_KEY, Plan } from '../decorators/require-plan.decorator';
 import type { UserSafe } from '../types/user-safe.type';

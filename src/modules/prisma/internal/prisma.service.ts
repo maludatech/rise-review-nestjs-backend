@@ -3,12 +3,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '../../generated/rise-review/client';
+import { PrismaClient } from '../../../generated/internal/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
 @Injectable()
-export class RiseReviewPrismaService
+export class InternalPrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
