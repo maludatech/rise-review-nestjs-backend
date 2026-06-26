@@ -8,16 +8,16 @@ import {
 const Stripe = require('stripe');
 import { RiseReviewPrismaService } from '../prisma/rise-review/prisma.service';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
 function createStripeClient() {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+  type SM = (...args: unknown[]) => Promise<Record<string, unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return new Stripe(key, { apiVersion: '2026-04-22.dahlia' }) as {
-    customers: { create: Function; list?: Function };
-    checkout: { sessions: { create: Function } };
-    billingPortal: { sessions: { create: Function } };
-    invoices: { list: Function };
+    customers: { create: SM };
+    checkout: { sessions: { create: SM } };
+    billingPortal: { sessions: { create: SM } };
+    invoices: { list: SM };
     webhooks: {
       constructEvent: (body: Buffer, sig: string, secret: string) => unknown;
     };
@@ -46,11 +46,11 @@ export class StripeService {
 
     let customerId = user.stripeCustomerId;
     if (!customerId) {
-      const customer = await this.stripe.customers.create({
+      const customer = (await this.stripe.customers.create({
         email: user.email,
         name: user.name ?? undefined,
         metadata: { userId: String(userId) },
-      });
+      })) as { id: string };
       customerId = customer.id;
       await this.prisma.user.update({
         where: { id: userId },
@@ -58,7 +58,7 @@ export class StripeService {
       });
     }
 
-    const session = await this.stripe.checkout.sessions.create({
+    const session = (await this.stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
@@ -67,7 +67,7 @@ export class StripeService {
       cancel_url: `${frontendUrl}/settings?tab=billing&canceled=true`,
       metadata: { userId: String(userId) },
       subscription_data: { metadata: { userId: String(userId) } },
-    });
+    })) as { url: string | null };
 
     return session.url;
   }
@@ -85,10 +85,10 @@ export class StripeService {
     const frontendUrl =
       process.env.FRONTEND_URL ?? 'https://rise-review.vercel.app';
 
-    const session = await this.stripe.billingPortal.sessions.create({
+    const session = (await this.stripe.billingPortal.sessions.create({
       customer: user.stripeCustomerId,
       return_url: `${frontendUrl}/settings?tab=billing`,
-    });
+    })) as { url: string };
 
     return session.url;
   }
@@ -112,10 +112,18 @@ export class StripeService {
     let invoices: object[] = [];
     if (user.stripeCustomerId) {
       try {
-        const stripeInvoices = await this.stripe.invoices.list({
+        type StripeInvoice = {
+          id: string;
+          number: string | null;
+          created: number;
+          amount_paid: number;
+          status: string | null;
+          invoice_pdf: string | null;
+        };
+        const stripeInvoices = (await this.stripe.invoices.list({
           customer: user.stripeCustomerId,
           limit: 10,
-        });
+        })) as { data: StripeInvoice[] };
         invoices = stripeInvoices.data.map((inv) => ({
           id: inv.id,
           number: inv.number,
@@ -145,6 +153,8 @@ export class StripeService {
     };
   }
 
+  // Webhook data arrives as untyped Stripe event objects — eslint-disable covers explicit casts only
+
   async handleWebhook(rawBody: Buffer, signature: string) {
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
     // Use unknown to avoid Stripe v22 namespace restructuring issues
@@ -162,7 +172,7 @@ export class StripeService {
       throw new BadRequestException(`Webhook Error: ${msg}`);
     }
 
-    const obj = event.data.object as Record<string, unknown>;
+    const obj = event.data.object;
 
     switch (event.type) {
       case 'customer.subscription.created':

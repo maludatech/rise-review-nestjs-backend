@@ -10,10 +10,7 @@ export class ReviewResponseController {
   constructor(private readonly reviewResponseService: ReviewResponseService) {}
 
   @Get()
-  async handleReviewResponse(
-    @Query('t') token: string,
-    @Res() res: Response,
-  ) {
+  async handleReviewResponse(@Query('t') token: string, @Res() res: Response) {
     if (!token) {
       return res.status(400).send('Invalid link.');
     }
@@ -22,7 +19,8 @@ export class ReviewResponseController {
     let followUp: (() => Promise<void>) | null;
 
     try {
-      ({ redirectUrl, followUp } = await this.reviewResponseService.handleResponse(token));
+      ({ redirectUrl, followUp } =
+        await this.reviewResponseService.handleResponse(token));
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : '';
 

@@ -1,11 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RiseReviewPrismaService } from '../modules/prisma/rise-review/prisma.service';
-import { InternalPrismaService } from '../modules/prisma/internal/prisma.service';
-import { EmailService } from '../modules/email/email.service';
 import { ReviewRequestService } from '../modules/review-request/review-request.service';
 import { OutreachService } from '../modules/outreach/outreach.service';
-import { CampaignService } from '../modules/campaign/campaign.service';
 import { EnrichmentService } from '../modules/internal/enrichment/enrichment.service';
 
 @Injectable()
@@ -13,12 +9,8 @@ export class CronService {
   private readonly logger = new Logger(CronService.name);
 
   constructor(
-    private readonly riseReviewPrisma: RiseReviewPrismaService,
-    private readonly internalPrisma: InternalPrismaService,
-    private readonly emailService: EmailService,
     private readonly reviewRequestService: ReviewRequestService,
     private readonly outreachService: OutreachService,
-    private readonly campaignService: CampaignService,
     private readonly enrichmentService: EnrichmentService,
   ) {}
 
@@ -50,12 +42,8 @@ export class CronService {
   }
 
   @Cron('* * * * *')
-  async dispatchScheduledCampaigns() {
-    try {
-      // TODO: query campaigns where isScheduled=true, status=pending, date <= now and dispatch
-    } catch (err) {
-      this.logger.error('dispatchScheduledCampaigns failed', err);
-    }
+  dispatchScheduledCampaigns() {
+    // TODO: query campaigns where isScheduled=true, status=pending, date <= now and dispatch
   }
 
   @Cron('*/10 * * * *')
@@ -78,22 +66,14 @@ export class CronService {
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  async sendDailyReports() {
-    try {
-      // TODO: implement daily performance report emails
-      this.logger.debug('Sending daily reports...');
-    } catch (err) {
-      this.logger.error('sendDailyReports failed', err);
-    }
+  sendDailyReports() {
+    // TODO: implement daily performance report emails
+    this.logger.debug('Sending daily reports...');
   }
 
   @Cron(CronExpression.EVERY_WEEK)
-  async sendWeeklyReports() {
-    try {
-      // TODO: implement weekly report emails
-      this.logger.debug('Sending weekly reports...');
-    } catch (err) {
-      this.logger.error('sendWeeklyReports failed', err);
-    }
+  sendWeeklyReports() {
+    // TODO: implement weekly report emails
+    this.logger.debug('Sending weekly reports...');
   }
 }

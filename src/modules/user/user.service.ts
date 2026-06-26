@@ -78,7 +78,8 @@ export class UserService {
       subscriptionPlan: user.subscriptionPlan ?? null,
       subscriptionStatus: user.subscriptionStatus ?? 'inactive',
       subscriptionCurrentPeriodEnd: user.subscriptionCurrentPeriodEnd ?? null,
-      subscriptionCancelAtPeriodEnd: user.subscriptionCancelAtPeriodEnd ?? false,
+      subscriptionCancelAtPeriodEnd:
+        user.subscriptionCancelAtPeriodEnd ?? false,
       isOnTrial: user.isOnTrial ?? false,
       trialEndDate: user.trialEndDate ?? null,
       business: {
@@ -206,8 +207,7 @@ export class UserService {
     const googleBusiness = user.googleBusiness as GoogleBusiness | null;
     const info = onboarding?.businessInfo ?? {};
 
-    const mapsLink =
-      info.mapsLink?.trim() ?? googleBusiness?.url?.trim() ?? '';
+    const mapsLink = info.mapsLink?.trim() ?? googleBusiness?.url?.trim() ?? '';
 
     return {
       businessName: (info.businessName ?? '').trim(),
@@ -238,7 +238,11 @@ export class UserService {
 
     await this.prisma.user.update({
       where: { id: userId },
-      data: { onboardingData: JSON.parse(JSON.stringify({ ...onboarding, businessInfo })) },
+      data: {
+        onboardingData: JSON.parse(
+          JSON.stringify({ ...onboarding, businessInfo }),
+        ),
+      },
     });
 
     const googleBusiness = user.googleBusiness as GoogleBusiness | null;
@@ -249,7 +253,8 @@ export class UserService {
       address: (businessInfo.address ?? '').trim(),
       country: (businessInfo.country ?? '').trim(),
       website: (businessInfo.website ?? '').trim(),
-      mapsLink: businessInfo.mapsLink?.trim() ?? googleBusiness?.url?.trim() ?? '',
+      mapsLink:
+        businessInfo.mapsLink?.trim() ?? googleBusiness?.url?.trim() ?? '',
     };
   }
 
@@ -279,7 +284,7 @@ export class UserService {
   ) {
     const user = await this.prisma.user.update({
       where: { id: userId },
-      data: { notificationPreferences: preferences as object },
+      data: { notificationPreferences: preferences },
       select: { notificationPreferences: true },
     });
 
@@ -298,7 +303,10 @@ export class UserService {
 
     const updated = await this.prisma.user.update({
       where: { id: userId },
-      data: { onboardingData: JSON.parse(JSON.stringify(merged)), onboardingComplete: true },
+      data: {
+        onboardingData: JSON.parse(JSON.stringify(merged)),
+        onboardingComplete: true,
+      },
       select: { onboardingData: true },
     });
 

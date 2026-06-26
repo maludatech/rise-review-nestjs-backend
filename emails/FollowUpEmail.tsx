@@ -8,7 +8,7 @@ import {
   Link,
   Hr,
   Img,
-} from "@react-email/components";
+} from '@react-email/components';
 
 interface FollowUpEmailProps {
   businessName?: string;
@@ -17,12 +17,12 @@ interface FollowUpEmailProps {
 }
 
 const currentYear = new Date().getFullYear();
-const BRAND = "#ea2069";
+const BRAND = '#ea2069';
 
 export default function FollowUpEmail({
-  businessName = "there",
-  city = "your area",
-  unsubscribeUrl = "#",
+  businessName = 'there',
+  city = 'your area',
+  unsubscribeUrl = '#',
 }: FollowUpEmailProps) {
   return (
     <Html>
@@ -50,32 +50,32 @@ export default function FollowUpEmail({
       <Body
         className="email-body"
         style={{
-          backgroundColor: "#f1f1f5",
+          backgroundColor: '#f1f1f5',
           fontFamily:
             "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
-          margin: "0",
-          padding: "32px 16px",
+          margin: '0',
+          padding: '32px 16px',
         }}
       >
-        <Container style={{ maxWidth: "560px", margin: "0 auto" }}>
+        <Container style={{ maxWidth: '560px', margin: '0 auto' }}>
           <div
             className="email-card"
             style={{
-              backgroundColor: "#ffffff",
-              borderRadius: "20px",
-              border: "1px solid rgba(0,0,0,0.07)",
-              overflow: "hidden",
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              border: '1px solid rgba(0,0,0,0.07)',
+              overflow: 'hidden',
               boxShadow:
-                "0 1px 3px rgba(0,0,0,0.05), 0 20px 50px rgba(0,0,0,0.08)",
+                '0 1px 3px rgba(0,0,0,0.05), 0 20px 50px rgba(0,0,0,0.08)',
             }}
           >
             {/* ── Header ── */}
             <div
               className="email-header"
               style={{
-                backgroundColor: "#fafafa",
-                borderBottom: "1px solid rgba(0,0,0,0.06)",
-                padding: "20px 28px",
+                backgroundColor: '#fafafa',
+                borderBottom: '1px solid rgba(0,0,0,0.06)',
+                padding: '20px 28px',
               }}
             >
               <table
@@ -83,10 +83,10 @@ export default function FollowUpEmail({
                 cellPadding={0}
                 cellSpacing={0}
                 border={0}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <tr>
-                  <td style={{ verticalAlign: "middle", whiteSpace: "nowrap" }}>
+                  <td style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                     <table
                       role="presentation"
                       cellPadding={0}
@@ -96,13 +96,13 @@ export default function FollowUpEmail({
                       <tr>
                         <td
                           style={{
-                            verticalAlign: "middle",
-                            width: "36px",
-                            height: "36px",
+                            verticalAlign: 'middle',
+                            width: '36px',
+                            height: '36px',
                             backgroundColor: BRAND,
-                            borderRadius: "10px",
-                            textAlign: "center",
-                            padding: "0",
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            padding: '0',
                           }}
                         >
                           <Img
@@ -110,23 +110,23 @@ export default function FollowUpEmail({
                             alt="Rise Review"
                             width="20"
                             height="20"
-                            style={{ display: "block", margin: "8px" }}
+                            style={{ display: 'block', margin: '8px' }}
                           />
                         </td>
                         <td
                           style={{
-                            verticalAlign: "middle",
-                            paddingLeft: "10px",
+                            verticalAlign: 'middle',
+                            paddingLeft: '10px',
                           }}
                         >
                           <Text
                             className="text-primary"
                             style={{
-                              margin: "0",
-                              fontSize: "15px",
-                              fontWeight: "600",
-                              color: "#111827",
-                              letterSpacing: "-0.01em",
+                              margin: '0',
+                              fontSize: '15px',
+                              fontWeight: '600',
+                              color: '#111827',
+                              letterSpacing: '-0.01em',
                             }}
                           >
                             Rise Review
@@ -137,19 +137,19 @@ export default function FollowUpEmail({
                   </td>
                   <td
                     style={{
-                      verticalAlign: "middle",
-                      textAlign: "right",
-                      width: "100%",
+                      verticalAlign: 'middle',
+                      textAlign: 'right',
+                      width: '100%',
                     }}
                   >
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
-                        letterSpacing: "0.02em",
+                        letterSpacing: '0.02em',
                       }}
                     >
                       FOLLOW-UP
@@ -160,14 +160,14 @@ export default function FollowUpEmail({
             </div>
 
             {/* ── Body ── */}
-            <div style={{ padding: "40px 28px 32px" }}>
+            <div style={{ padding: '40px 28px 32px' }}>
               {/* Greeting */}
               <Text
                 className="text-secondary"
                 style={{
-                  margin: "0 0 8px 0",
-                  fontSize: "14px",
-                  color: "#6b7280",
+                  margin: '0 0 8px 0',
+                  fontSize: '14px',
+                  color: '#6b7280',
                 }}
               >
                 Hi {businessName} —
@@ -176,12 +176,12 @@ export default function FollowUpEmail({
               <Text
                 className="text-primary"
                 style={{
-                  margin: "0 0 20px 0",
-                  fontSize: "22px",
-                  fontWeight: "700",
-                  color: "#0f172a",
-                  letterSpacing: "-0.03em",
-                  lineHeight: "1.2",
+                  margin: '0 0 20px 0',
+                  fontSize: '22px',
+                  fontWeight: '700',
+                  color: '#0f172a',
+                  letterSpacing: '-0.03em',
+                  lineHeight: '1.2',
                 }}
               >
                 Just following up on
@@ -192,14 +192,14 @@ export default function FollowUpEmail({
               <Text
                 className="text-secondary"
                 style={{
-                  margin: "0 0 20px 0",
-                  fontSize: "15px",
-                  lineHeight: "1.75",
-                  color: "#4b5563",
+                  margin: '0 0 20px 0',
+                  fontSize: '15px',
+                  lineHeight: '1.75',
+                  color: '#4b5563',
                 }}
               >
                 We'd love to show you how Rise Review helps businesses like
-                yours in <strong style={{ color: "#0f172a" }}>{city}</strong>{" "}
+                yours in <strong style={{ color: '#0f172a' }}>{city}</strong>{' '}
                 collect more reviews, improve visibility, and build lasting
                 customer trust.
               </Text>
@@ -207,10 +207,10 @@ export default function FollowUpEmail({
               <Text
                 className="text-secondary"
                 style={{
-                  margin: "0 0 32px 0",
-                  fontSize: "15px",
-                  lineHeight: "1.75",
-                  color: "#4b5563",
+                  margin: '0 0 32px 0',
+                  fontSize: '15px',
+                  lineHeight: '1.75',
+                  color: '#4b5563',
                 }}
               >
                 Any questions? Just reply to this email — we're happy to help.
@@ -220,11 +220,11 @@ export default function FollowUpEmail({
               <div
                 className="highlight-card"
                 style={{
-                  backgroundColor: "rgba(234,32,105,0.07)",
-                  borderRadius: "14px",
-                  border: "1px solid rgba(234,32,105,0.15)",
-                  padding: "20px 22px",
-                  marginBottom: "32px",
+                  backgroundColor: 'rgba(234,32,105,0.07)',
+                  borderRadius: '14px',
+                  border: '1px solid rgba(234,32,105,0.15)',
+                  padding: '20px 22px',
+                  marginBottom: '32px',
                 }}
               >
                 <table
@@ -232,18 +232,18 @@ export default function FollowUpEmail({
                   cellPadding={0}
                   cellSpacing={0}
                   border={0}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                 >
                   <tr>
-                    <td style={{ verticalAlign: "top", paddingRight: "20px" }}>
+                    <td style={{ verticalAlign: 'top', paddingRight: '20px' }}>
                       <Text
                         style={{
-                          margin: "0 0 2px 0",
-                          fontSize: "22px",
-                          fontWeight: "700",
+                          margin: '0 0 2px 0',
+                          fontSize: '22px',
+                          fontWeight: '700',
                           color: BRAND,
-                          letterSpacing: "-0.03em",
-                          lineHeight: "1",
+                          letterSpacing: '-0.03em',
+                          lineHeight: '1',
                         }}
                       >
                         More reviews.
@@ -251,12 +251,12 @@ export default function FollowUpEmail({
                       <Text
                         className="text-muted"
                         style={{
-                          margin: "0",
-                          fontSize: "12px",
-                          color: "#9ca3af",
+                          margin: '0',
+                          fontSize: '12px',
+                          color: '#9ca3af',
                           fontFamily: "'DM Mono', monospace",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.06em",
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.06em',
                         }}
                       >
                         Better visibility
@@ -264,19 +264,19 @@ export default function FollowUpEmail({
                     </td>
                     <td
                       style={{
-                        verticalAlign: "top",
-                        borderLeft: "1px solid rgba(234,32,105,0.15)",
-                        paddingLeft: "20px",
+                        verticalAlign: 'top',
+                        borderLeft: '1px solid rgba(234,32,105,0.15)',
+                        paddingLeft: '20px',
                       }}
                     >
                       <Text
                         style={{
-                          margin: "0 0 2px 0",
-                          fontSize: "22px",
-                          fontWeight: "700",
+                          margin: '0 0 2px 0',
+                          fontSize: '22px',
+                          fontWeight: '700',
                           color: BRAND,
-                          letterSpacing: "-0.03em",
-                          lineHeight: "1",
+                          letterSpacing: '-0.03em',
+                          lineHeight: '1',
                         }}
                       >
                         Less effort.
@@ -284,12 +284,12 @@ export default function FollowUpEmail({
                       <Text
                         className="text-muted"
                         style={{
-                          margin: "0",
-                          fontSize: "12px",
-                          color: "#9ca3af",
+                          margin: '0',
+                          fontSize: '12px',
+                          color: '#9ca3af',
                           fontFamily: "'DM Mono', monospace",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.06em",
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.06em',
                         }}
                       >
                         Automated outreach
@@ -303,15 +303,15 @@ export default function FollowUpEmail({
               <Text
                 className="text-primary"
                 style={{
-                  margin: "0",
-                  fontSize: "14px",
-                  lineHeight: "1.7",
-                  color: "#374151",
+                  margin: '0',
+                  fontSize: '14px',
+                  lineHeight: '1.7',
+                  color: '#374151',
                 }}
               >
                 Best,
                 <br />
-                <strong style={{ color: "#0f172a" }}>
+                <strong style={{ color: '#0f172a' }}>
                   The Rise Review Team
                 </strong>
               </Text>
@@ -319,24 +319,24 @@ export default function FollowUpEmail({
               <Hr
                 className="divider"
                 style={{
-                  borderColor: "rgba(0,0,0,0.07)",
-                  margin: "28px 0 20px",
+                  borderColor: 'rgba(0,0,0,0.07)',
+                  margin: '28px 0 20px',
                 }}
               />
 
               <Text
                 className="text-muted"
                 style={{
-                  fontSize: "12px",
-                  color: "#9ca3af",
-                  textAlign: "center",
-                  margin: "0",
-                  lineHeight: "1.6",
+                  fontSize: '12px',
+                  color: '#9ca3af',
+                  textAlign: 'center',
+                  margin: '0',
+                  lineHeight: '1.6',
                 }}
               >
                 <Link
                   href={unsubscribeUrl}
-                  style={{ color: "#9ca3af", textDecoration: "underline" }}
+                  style={{ color: '#9ca3af', textDecoration: 'underline' }}
                 >
                   Unsubscribe from future emails
                 </Link>
@@ -347,9 +347,9 @@ export default function FollowUpEmail({
             <div
               className="email-footer"
               style={{
-                backgroundColor: "#f8fafc",
-                borderTop: "1px solid rgba(0,0,0,0.06)",
-                padding: "16px 28px",
+                backgroundColor: '#f8fafc',
+                borderTop: '1px solid rgba(0,0,0,0.06)',
+                padding: '16px 28px',
               }}
             >
               <table
@@ -357,29 +357,29 @@ export default function FollowUpEmail({
                 cellPadding={0}
                 cellSpacing={0}
                 border={0}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <tr>
                   <td>
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
                       }}
                     >
                       © {currentYear} Rise Review
                     </Text>
                   </td>
-                  <td style={{ textAlign: "right" }}>
+                  <td style={{ textAlign: 'right' }}>
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
                       }}
                     >
@@ -397,7 +397,7 @@ export default function FollowUpEmail({
 }
 
 FollowUpEmail.PreviewProps = {
-  businessName: "La Bella Café",
-  city: "San Francisco",
-  unsubscribeUrl: "https://app.risereview.io/unsubscribe",
+  businessName: 'La Bella Café',
+  city: 'San Francisco',
+  unsubscribeUrl: 'https://app.risereview.io/unsubscribe',
 } as FollowUpEmailProps;

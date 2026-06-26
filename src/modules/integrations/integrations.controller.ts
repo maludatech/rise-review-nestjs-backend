@@ -17,6 +17,11 @@ import { CoverManagerService } from './cover-manager/cover-manager.service';
 import { OpenTableService } from './open-table/open-table.service';
 import type { OnboardingData } from '../../common/types/onboarding-data.type';
 
+// JSON.parse always returns `any`; this helper preserves intent without unsafe-assignment suppression
+function deepClone<T>(val: T): T {
+  return JSON.parse(JSON.stringify(val)) as T;
+}
+
 const VALID_PLATFORMS = ['coverManager', 'openTable'] as const;
 type ValidPlatform = (typeof VALID_PLATFORMS)[number];
 
@@ -84,19 +89,17 @@ export class IntegrationsController {
           where: { id: user.id },
           data: {
             covermanagerConnected: true,
-            onboardingData: JSON.parse(
-              JSON.stringify({
-                ...onboarding,
-                platform: {
-                  ...(onboarding.platform ?? {}),
-                  coverManager: {
-                    ...platformData,
-                    connected: true,
-                    connectedAt: new Date().toISOString(),
-                  },
+            onboardingData: deepClone({
+              ...onboarding,
+              platform: {
+                ...(onboarding.platform ?? {}),
+                coverManager: {
+                  ...platformData,
+                  connected: true,
+                  connectedAt: new Date().toISOString(),
                 },
-              }),
-            ),
+              },
+            }),
           },
         });
         break;
@@ -117,19 +120,17 @@ export class IntegrationsController {
           where: { id: user.id },
           data: {
             openTableConnected: true,
-            onboardingData: JSON.parse(
-              JSON.stringify({
-                ...onboarding,
-                platform: {
-                  ...(onboarding.platform ?? {}),
-                  openTable: {
-                    ...platformData,
-                    connected: true,
-                    connectedAt: new Date().toISOString(),
-                  },
+            onboardingData: deepClone({
+              ...onboarding,
+              platform: {
+                ...(onboarding.platform ?? {}),
+                openTable: {
+                  ...platformData,
+                  connected: true,
+                  connectedAt: new Date().toISOString(),
                 },
-              }),
-            ),
+              },
+            }),
           },
         });
         break;
@@ -157,7 +158,7 @@ export class IntegrationsController {
     if (!dbUser) throw new NotFoundException('User not found');
 
     const onboarding = (dbUser.onboardingData ?? {}) as OnboardingData;
-    const platforms = (onboarding.platform ?? {}) as Record<string, unknown>;
+    const platforms = onboarding.platform ?? {};
 
     if (!platforms[platform])
       throw new NotFoundException('Platform not connected');
@@ -171,6 +172,8 @@ export class IntegrationsController {
           platform === 'coverManager' ? false : dbUser.covermanagerConnected,
         openTableConnected:
           platform === 'openTable' ? false : dbUser.openTableConnected,
+        // JSON.parse returns any, which Prisma's InputJsonValue accepts
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         onboardingData: JSON.parse(
           JSON.stringify({ ...onboarding, platform: updatedPlatforms }),
         ),

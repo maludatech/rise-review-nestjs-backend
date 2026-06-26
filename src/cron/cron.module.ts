@@ -7,7 +7,13 @@ import { ReviewRequestModule } from '../modules/review-request/review-request.mo
 import { EnrichmentModule } from '../modules/internal/enrichment/enrichment.module';
 
 @Module({
-  imports: [EmailModule, OutreachModule, CampaignModule, ReviewRequestModule, EnrichmentModule],
+  imports: [
+    EmailModule,
+    OutreachModule,
+    CampaignModule,
+    ReviewRequestModule,
+    EnrichmentModule,
+  ],
   providers: [CronService],
 })
 export class CronModule {}

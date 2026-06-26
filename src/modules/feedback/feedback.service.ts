@@ -36,7 +36,7 @@ export class FeedbackService {
         customerName: customer?.name ?? null,
         customerPhone: customer?.phone ?? null,
         customerEmail: customer?.email ?? null,
-        channel: channel as 'whatsapp' | 'email',
+        channel: channel,
         message: message.trim(),
         read: false,
       },

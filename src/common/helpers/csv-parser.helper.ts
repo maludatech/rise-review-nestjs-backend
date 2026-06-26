@@ -37,7 +37,6 @@ export async function parseCSV<
     delimiter: sniffDelimiter(raw),
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const result: unknown = parse(raw, options);
   return result as T[];
 }

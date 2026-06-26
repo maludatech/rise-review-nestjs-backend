@@ -82,12 +82,16 @@ export class OnboardingService {
     if (windowExpired) {
       await this.prisma.user.update({
         where: { id: userId },
-        data: { smsDailyCount: 1, smsDailyWindowStart: now, smsLastSentAt: now },
+        data: {
+          smsDailyCount: 1,
+          smsDailyWindowStart: now,
+          smsLastSentAt: now,
+        },
       });
     } else {
       if ((user.smsDailyCount ?? 0) >= SMS_DAILY_LIMIT) {
         const windowResetAt = new Date(
-          windowStart!.getTime() + SMS_DAILY_WINDOW_MS,
+          windowStart.getTime() + SMS_DAILY_WINDOW_MS,
         );
         const hoursUntilReset = Math.ceil(
           (windowResetAt.getTime() - now.getTime()) / (1000 * 60 * 60),
@@ -147,8 +151,8 @@ export class OnboardingService {
     await this.prisma.user.update({
       where: { id: userId },
       data: {
-        googleVerification: googleVerification as object,
-        googleBusiness: googleBusiness as object,
+        googleVerification: googleVerification,
+        googleBusiness: googleBusiness,
       },
     });
 
@@ -184,7 +188,7 @@ export class OnboardingService {
       await this.prisma.user.update({
         where: { id: userId },
         data: {
-          googleVerification: { ...v, status: 'expired' } as object,
+          googleVerification: { ...v, status: 'expired' },
         },
       });
       throw new BadRequestException('Verification code expired.');
@@ -198,7 +202,7 @@ export class OnboardingService {
           googleVerification: {
             ...v,
             attempts: (v.attempts ?? 0) + 1,
-          } as object,
+          },
         },
       });
       throw new BadRequestException('Invalid verification code.');
@@ -209,8 +213,8 @@ export class OnboardingService {
     await this.prisma.user.update({
       where: { id: userId },
       data: {
-        googleVerification: { ...v, status: 'verified' } as object,
-        googleBusiness: { ...googleBusiness, verified: true } as object,
+        googleVerification: { ...v, status: 'verified' },
+        googleBusiness: { ...googleBusiness, verified: true },
       },
     });
   }
@@ -247,7 +251,7 @@ export class OnboardingService {
           tokenHash,
           tokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
           attempts: (v.attempts ?? 0) + 1,
-        } as object,
+        },
       },
     });
 

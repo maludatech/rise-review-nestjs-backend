@@ -23,7 +23,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const body = exception.getResponse();
-      message = typeof body === 'string' ? body : (body as object);
+      message = typeof body === 'string' ? body : body;
     } else {
       this.logger.error(
         `Unhandled exception on ${req.method} ${req.url}`,
@@ -31,10 +31,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    res.status(status).json(
-      typeof message === 'object'
-        ? { statusCode: status, ...message }
-        : { statusCode: status, message },
-    );
+    res
+      .status(status)
+      .json(
+        typeof message === 'object'
+          ? { statusCode: status, ...message }
+          : { statusCode: status, message },
+      );
   }
 }

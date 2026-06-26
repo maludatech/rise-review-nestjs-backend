@@ -9,7 +9,7 @@ import {
   Hr,
   Img,
   Button,
-} from "@react-email/components";
+} from '@react-email/components';
 
 interface CampaignEmailProps {
   businessName?: string;
@@ -22,11 +22,11 @@ interface CampaignEmailProps {
 }
 
 const currentYear = new Date().getFullYear();
-const BRAND = "#ea2069";
+const BRAND = '#ea2069';
 
 export default function CampaignEmail({
-  businessName = "your business",
-  reviewLink = "#",
+  businessName = 'your business',
+  reviewLink = '#',
   negativeUrl,
   customerName,
   senderName,
@@ -34,7 +34,7 @@ export default function CampaignEmail({
   logoUrl,
 }: CampaignEmailProps) {
   const sender = senderName ?? `The ${businessName} Team`;
-  const greeting = customerName ? `Hello, ${customerName} —` : "Hello —";
+  const greeting = customerName ? `Hello, ${customerName} —` : 'Hello —';
 
   return (
     <Html>
@@ -64,32 +64,32 @@ export default function CampaignEmail({
       <Body
         className="email-body"
         style={{
-          backgroundColor: "#f1f1f5",
+          backgroundColor: '#f1f1f5',
           fontFamily:
             "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
-          margin: "0",
-          padding: "32px 16px",
+          margin: '0',
+          padding: '32px 16px',
         }}
       >
-        <Container style={{ maxWidth: "560px", margin: "0 auto" }}>
+        <Container style={{ maxWidth: '560px', margin: '0 auto' }}>
           <div
             className="email-card"
             style={{
-              backgroundColor: "#ffffff",
-              borderRadius: "20px",
-              border: "1px solid rgba(0,0,0,0.07)",
-              overflow: "hidden",
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              border: '1px solid rgba(0,0,0,0.07)',
+              overflow: 'hidden',
               boxShadow:
-                "0 1px 3px rgba(0,0,0,0.05), 0 20px 50px rgba(0,0,0,0.08)",
+                '0 1px 3px rgba(0,0,0,0.05), 0 20px 50px rgba(0,0,0,0.08)',
             }}
           >
             {/* ── Header ── */}
             <div
               className="email-header"
               style={{
-                backgroundColor: "#fafafa",
-                borderBottom: "1px solid rgba(0,0,0,0.06)",
-                padding: "20px 28px",
+                backgroundColor: '#fafafa',
+                borderBottom: '1px solid rgba(0,0,0,0.06)',
+                padding: '20px 28px',
               }}
             >
               <table
@@ -97,26 +97,26 @@ export default function CampaignEmail({
                 cellPadding={0}
                 cellSpacing={0}
                 border={0}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <tr>
-                  <td style={{ verticalAlign: "middle", whiteSpace: "nowrap" }}>
+                  <td style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                     {logoUrl ? (
                       <Img
                         src={logoUrl}
                         alt={businessName}
                         height="32"
-                        style={{ display: "block" }}
+                        style={{ display: 'block' }}
                       />
                     ) : (
                       <Text
                         className="text-primary"
                         style={{
-                          margin: "0",
-                          fontSize: "15px",
-                          fontWeight: "600",
-                          color: "#111827",
-                          letterSpacing: "-0.01em",
+                          margin: '0',
+                          fontSize: '15px',
+                          fontWeight: '600',
+                          color: '#111827',
+                          letterSpacing: '-0.01em',
                         }}
                       >
                         {businessName}
@@ -125,22 +125,22 @@ export default function CampaignEmail({
                   </td>
                   <td
                     style={{
-                      verticalAlign: "middle",
-                      textAlign: "right",
-                      width: "100%",
+                      verticalAlign: 'middle',
+                      textAlign: 'right',
+                      width: '100%',
                     }}
                   >
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
-                        letterSpacing: "0.02em",
+                        letterSpacing: '0.02em',
                       }}
                     >
-                      {negativeUrl ? "REVIEW REQUEST" : "CAMPAIGN"}
+                      {negativeUrl ? 'REVIEW REQUEST' : 'CAMPAIGN'}
                     </Text>
                   </td>
                 </tr>
@@ -148,14 +148,14 @@ export default function CampaignEmail({
             </div>
 
             {/* ── Body ── */}
-            <div style={{ padding: "40px 28px 32px" }}>
+            <div style={{ padding: '40px 28px 32px' }}>
               {/* Greeting */}
               <Text
                 className="text-secondary"
                 style={{
-                  margin: "0 0 8px 0",
-                  fontSize: "14px",
-                  color: "#6b7280",
+                  margin: '0 0 8px 0',
+                  fontSize: '14px',
+                  color: '#6b7280',
                 }}
               >
                 {greeting}
@@ -163,12 +163,12 @@ export default function CampaignEmail({
               <Heading
                 className="text-primary"
                 style={{
-                  margin: "0 0 16px 0",
-                  fontSize: "22px",
-                  fontWeight: "700",
-                  color: "#0f172a",
-                  letterSpacing: "-0.03em",
-                  lineHeight: "1.2",
+                  margin: '0 0 16px 0',
+                  fontSize: '22px',
+                  fontWeight: '700',
+                  color: '#0f172a',
+                  letterSpacing: '-0.03em',
+                  lineHeight: '1.2',
                 }}
               >
                 How was your experience
@@ -179,10 +179,10 @@ export default function CampaignEmail({
               <Text
                 className="text-secondary"
                 style={{
-                  margin: "0 0 32px 0",
-                  fontSize: "15px",
-                  lineHeight: "1.7",
-                  color: "#4b5563",
+                  margin: '0 0 32px 0',
+                  fontSize: '15px',
+                  lineHeight: '1.7',
+                  color: '#4b5563',
                 }}
               >
                 {negativeUrl
@@ -194,20 +194,20 @@ export default function CampaignEmail({
               <div
                 className="star-card"
                 style={{
-                  backgroundColor: "rgba(234,32,105,0.07)",
-                  borderRadius: "16px",
-                  border: "1px solid rgba(234,32,105,0.15)",
-                  padding: "28px 24px",
-                  textAlign: "center",
-                  marginBottom: "32px",
+                  backgroundColor: 'rgba(234,32,105,0.07)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(234,32,105,0.15)',
+                  padding: '28px 24px',
+                  textAlign: 'center',
+                  marginBottom: '32px',
                 }}
               >
                 <Text
                   style={{
-                    margin: "0 0 6px 0",
-                    fontSize: "36px",
-                    letterSpacing: "6px",
-                    lineHeight: "1",
+                    margin: '0 0 6px 0',
+                    fontSize: '36px',
+                    letterSpacing: '6px',
+                    lineHeight: '1',
                   }}
                 >
                   ★★★★★
@@ -215,12 +215,12 @@ export default function CampaignEmail({
                 <Text
                   className="text-muted"
                   style={{
-                    margin: "12px 0 20px 0",
-                    fontSize: "13px",
-                    color: "#9ca3af",
+                    margin: '12px 0 20px 0',
+                    fontSize: '13px',
+                    color: '#9ca3af',
                     fontFamily: "'DM Mono', monospace",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
                   }}
                 >
                   Share your experience
@@ -233,22 +233,22 @@ export default function CampaignEmail({
                     cellPadding={0}
                     cellSpacing={0}
                     border={0}
-                    style={{ margin: "0 auto" }}
+                    style={{ margin: '0 auto' }}
                   >
                     <tr>
-                      <td style={{ paddingRight: "10px" }}>
+                      <td style={{ paddingRight: '10px' }}>
                         <Button
                           href={reviewLink}
                           style={{
                             backgroundColor: BRAND,
-                            color: "#ffffff",
-                            fontSize: "14px",
-                            fontWeight: "600",
-                            padding: "13px 24px",
-                            borderRadius: "10px",
-                            textDecoration: "none",
-                            display: "inline-block",
-                            letterSpacing: "-0.01em",
+                            color: '#ffffff',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            padding: '13px 24px',
+                            borderRadius: '10px',
+                            textDecoration: 'none',
+                            display: 'inline-block',
+                            letterSpacing: '-0.01em',
                           }}
                         >
                           😊 Great experience
@@ -259,16 +259,16 @@ export default function CampaignEmail({
                           href={negativeUrl}
                           className="negative-btn"
                           style={{
-                            backgroundColor: "#f1f5f9",
-                            color: "#374151",
-                            fontSize: "14px",
-                            fontWeight: "600",
-                            padding: "13px 24px",
-                            borderRadius: "10px",
-                            textDecoration: "none",
-                            display: "inline-block",
-                            letterSpacing: "-0.01em",
-                            border: "1px solid rgba(0,0,0,0.08)",
+                            backgroundColor: '#f1f5f9',
+                            color: '#374151',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            padding: '13px 24px',
+                            borderRadius: '10px',
+                            textDecoration: 'none',
+                            display: 'inline-block',
+                            letterSpacing: '-0.01em',
+                            border: '1px solid rgba(0,0,0,0.08)',
                           }}
                         >
                           😞 Not so great
@@ -282,14 +282,14 @@ export default function CampaignEmail({
                     href={reviewLink}
                     style={{
                       backgroundColor: BRAND,
-                      color: "#ffffff",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                      padding: "13px 32px",
-                      borderRadius: "10px",
-                      textDecoration: "none",
-                      display: "inline-block",
-                      letterSpacing: "-0.01em",
+                      color: '#ffffff',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      padding: '13px 32px',
+                      borderRadius: '10px',
+                      textDecoration: 'none',
+                      display: 'inline-block',
+                      letterSpacing: '-0.01em',
                     }}
                   >
                     Leave a Review →
@@ -301,21 +301,21 @@ export default function CampaignEmail({
               <div
                 className="sender-block"
                 style={{
-                  backgroundColor: "#f8fafc",
-                  borderRadius: "12px",
-                  border: "1px solid rgba(0,0,0,0.06)",
-                  padding: "16px 20px",
+                  backgroundColor: '#f8fafc',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(0,0,0,0.06)',
+                  padding: '16px 20px',
                 }}
               >
                 <Text
                   className="text-muted"
                   style={{
-                    margin: "0 0 4px 0",
-                    fontSize: "11px",
-                    color: "#9ca3af",
+                    margin: '0 0 4px 0',
+                    fontSize: '11px',
+                    color: '#9ca3af',
                     fontFamily: "'DM Mono', monospace",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
                   }}
                 >
                   From
@@ -323,19 +323,19 @@ export default function CampaignEmail({
                 <Text
                   className="text-primary"
                   style={{
-                    margin: "0",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    color: "#0f172a",
+                    margin: '0',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#0f172a',
                   }}
                 >
                   {sender}
                 </Text>
                 {replyToEmail && (
-                  <Text style={{ margin: "4px 0 0 0", fontSize: "13px" }}>
+                  <Text style={{ margin: '4px 0 0 0', fontSize: '13px' }}>
                     <a
                       href={`mailto:${replyToEmail}`}
-                      style={{ color: BRAND, textDecoration: "none" }}
+                      style={{ color: BRAND, textDecoration: 'none' }}
                     >
                       {replyToEmail}
                     </a>
@@ -346,19 +346,19 @@ export default function CampaignEmail({
               <Hr
                 className="divider"
                 style={{
-                  borderColor: "rgba(0,0,0,0.07)",
-                  margin: "28px 0 20px",
+                  borderColor: 'rgba(0,0,0,0.07)',
+                  margin: '28px 0 20px',
                 }}
               />
 
               <Text
                 className="text-muted"
                 style={{
-                  fontSize: "13px",
-                  color: "#9ca3af",
-                  textAlign: "center",
-                  margin: "0",
-                  lineHeight: "1.6",
+                  fontSize: '13px',
+                  color: '#9ca3af',
+                  textAlign: 'center',
+                  margin: '0',
+                  lineHeight: '1.6',
                 }}
               >
                 {negativeUrl
@@ -371,9 +371,9 @@ export default function CampaignEmail({
             <div
               className="email-footer"
               style={{
-                backgroundColor: "#f8fafc",
-                borderTop: "1px solid rgba(0,0,0,0.06)",
-                padding: "16px 28px",
+                backgroundColor: '#f8fafc',
+                borderTop: '1px solid rgba(0,0,0,0.06)',
+                padding: '16px 28px',
               }}
             >
               <table
@@ -381,29 +381,29 @@ export default function CampaignEmail({
                 cellPadding={0}
                 cellSpacing={0}
                 border={0}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <tr>
                   <td>
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
                       }}
                     >
                       © {currentYear} {businessName}
                     </Text>
                   </td>
-                  <td style={{ textAlign: "right" }}>
+                  <td style={{ textAlign: 'right' }}>
                     <Text
                       className="text-muted"
                       style={{
-                        margin: "0",
-                        fontSize: "11px",
-                        color: "#9ca3af",
+                        margin: '0',
+                        fontSize: '11px',
+                        color: '#9ca3af',
                         fontFamily: "'DM Mono', monospace",
                       }}
                     >
@@ -421,12 +421,12 @@ export default function CampaignEmail({
 }
 
 CampaignEmail.PreviewProps = {
-  businessName: "La Bella Café",
-  customerName: "Sarah",
-  reviewLink: "https://g.page/r/labella-cafe/review",
-  negativeUrl: "https://app.risereview.io/feedback?token=preview",
-  senderName: "La Bella Café Team",
-  replyToEmail: "hello@labellacafe.com",
+  businessName: 'La Bella Café',
+  customerName: 'Sarah',
+  reviewLink: 'https://g.page/r/labella-cafe/review',
+  negativeUrl: 'https://app.risereview.io/feedback?token=preview',
+  senderName: 'La Bella Café Team',
+  replyToEmail: 'hello@labellacafe.com',
   logoUrl:
-    "https://res.cloudinary.com/dlnvweuhv/image/upload/v1765648905/rise-review-icon.png",
+    'https://res.cloudinary.com/dlnvweuhv/image/upload/v1765648905/rise-review-icon.png',
 } as CampaignEmailProps;

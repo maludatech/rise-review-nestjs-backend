@@ -166,7 +166,7 @@ export class CustomerService {
       bom: true,
       trim: true,
       relax_column_count: true,
-    }) as Record<string, string>[];
+    }) as unknown as Record<string, string>[];
 
     const customers: {
       name: string;
@@ -176,15 +176,14 @@ export class CustomerService {
     }[] = [];
 
     for (const row of rows) {
-      const name = (row.name ?? '').trim();
-      const email = (row.email ?? '').trim().toLowerCase() || null;
+      const name = (row['name'] ?? '').trim();
+      const email = (row['email'] ?? '').trim().toLowerCase() || null;
 
-      let phone = (row.phone ?? '').trim() || null;
+      let phone: string | null = (row['phone'] ?? '').trim() || null;
       if (phone && !phone.startsWith('+')) phone = `+${phone}`;
       if (phone) phone = phone.replace(/[\s\-()]/g, '');
 
-      const rawDate =
-        row.lastvisitdate ?? row.last_visit_date ?? row.lastvisitdate ?? '';
+      const rawDate = row['lastvisitdate'] ?? row['last_visit_date'] ?? '';
       let lastVisitDate: Date | null = null;
       if (rawDate) {
         const parsed = new Date(rawDate);

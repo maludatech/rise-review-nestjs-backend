@@ -140,7 +140,10 @@ export class ReviewResponseService {
     // ── Build fire-and-forget follow-up closure ───────────────────────────
     const followUp = async () => {
       const firstName = customer.name?.split(' ')[0] ?? 'there';
-      const templates = getFunnelTemplates({ onboardingData: onboarding }, channel);
+      const templates = getFunnelTemplates(
+        { onboardingData: onboarding },
+        channel,
+      );
 
       const message =
         verdict === 'positive'

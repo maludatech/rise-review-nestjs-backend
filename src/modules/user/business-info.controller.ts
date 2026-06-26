@@ -1,4 +1,12 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, Patch, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { PlanGuard } from '../../common/guards/plan.guard';
 import { RequirePlan } from '../../common/decorators/require-plan.decorator';
@@ -6,7 +14,12 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserService } from './user.service';
 import { UpdateBusinessInfoDto } from './dto/update-business-info.dto';
 
-const READONLY_FIELDS = ['businessName', 'category', 'country', 'mapsLink'] as const;
+const READONLY_FIELDS = [
+  'businessName',
+  'category',
+  'country',
+  'mapsLink',
+] as const;
 
 @Controller('rise-review/business-info')
 @UseGuards(JwtAuthGuard, PlanGuard)

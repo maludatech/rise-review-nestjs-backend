@@ -5,6 +5,8 @@ export class SubmitFeedbackDto {
   t: string;
 
   @IsString()
-  @MinLength(5, { message: 'Please write at least a few words about your experience.' })
+  @MinLength(5, {
+    message: 'Please write at least a few words about your experience.',
+  })
   message: string;
 }

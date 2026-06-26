@@ -4,7 +4,12 @@ import type { OnboardingData } from '../../common/types/onboarding-data.type';
 
 type PlatformMap = {
   coverManager?: { connected?: boolean; apiKey?: string; restaurant?: string };
-  openTable?: { connected?: boolean; clientId?: string; clientSecret?: string; restaurantId?: string };
+  openTable?: {
+    connected?: boolean;
+    clientId?: string;
+    clientSecret?: string;
+    restaurantId?: string;
+  };
   theFork?: { connected?: boolean };
   doctolib?: { connected?: boolean };
 };

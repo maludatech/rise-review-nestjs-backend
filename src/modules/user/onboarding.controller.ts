@@ -26,7 +26,7 @@ export class OnboardingController {
   ) {
     const onboardingData = await this.userService.saveOnboardingData(
       user.id,
-      dto as Record<string, unknown>,
+      dto,
     );
     return { success: true, onboardingData };
   }

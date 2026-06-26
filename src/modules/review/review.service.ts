@@ -9,10 +9,7 @@ export class ReviewService {
     private readonly reviewRequest: ReviewRequestService,
   ) {}
 
-  async getReviews(
-    userId: number,
-    query: { page?: string; limit?: string },
-  ) {
+  async getReviews(userId: number, query: { page?: string; limit?: string }) {
     const limit = Math.min(Math.max(Number(query.limit ?? 50), 1), 200);
     const page = Math.max(Number(query.page ?? 1), 1);
     const skip = (page - 1) * limit;
@@ -40,7 +37,11 @@ export class ReviewService {
     return { count };
   }
 
-  async respondToReview(userId: number, reviewId: number, responseText: string) {
+  async respondToReview(
+    userId: number,
+    reviewId: number,
+    responseText: string,
+  ) {
     const review = await this.prisma.review.findFirst({
       where: { id: reviewId, userId },
     });

@@ -51,6 +51,7 @@ export class CustomerController {
 
   @Post('csv')
   @HttpCode(201)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
   @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
   async uploadCsv(
     @CurrentUser() user: { id: number },
@@ -60,7 +61,8 @@ export class CustomerController {
 
     const { added, skipped } = await this.customerService.importCsv(
       user.id,
-      file.buffer,
+
+      (file as unknown as { buffer: Buffer }).buffer,
     );
 
     return {

@@ -131,18 +131,17 @@ export class CampaignService {
       data: {
         userId,
         name: dto.name.trim(),
-        channel: channel as 'email' | 'whatsapp',
+        channel: channel,
         platforms: dto.platforms ?? ['google'],
-        targetGroup: (dto.targetGroup ??
-          'hasNoReview') as Campaign['targetGroup'],
-        timing: (dto.timing ?? 'SEVEN_DAYS') as Campaign['timing'],
+        targetGroup: dto.targetGroup ?? 'hasNoReview',
+        timing: dto.timing ?? 'SEVEN_DAYS',
         language: dto.language ?? 'en',
         date: dto.date ? new Date(dto.date) : null,
         isScheduled,
         tone: dto.useGPT ? (dto.tone ?? null) : null,
         message: dto.useGPT ? '' : (dto.message ?? ''),
         useGPT: dto.useGPT ?? false,
-        status: initialStatus as Campaign['status'],
+        status: initialStatus,
       },
     });
 
@@ -200,13 +199,10 @@ export class CampaignService {
 
     const updateData: Partial<Campaign> = {};
     if (dto.name !== undefined) updateData.name = dto.name;
-    if (dto.channel !== undefined)
-      updateData.channel = dto.channel as Campaign['channel'];
+    if (dto.channel !== undefined) updateData.channel = dto.channel;
     if (dto.platforms !== undefined) updateData.platforms = dto.platforms;
-    if (dto.targetGroup !== undefined)
-      updateData.targetGroup = dto.targetGroup as Campaign['targetGroup'];
-    if (dto.timing !== undefined)
-      updateData.timing = dto.timing as Campaign['timing'];
+    if (dto.targetGroup !== undefined) updateData.targetGroup = dto.targetGroup;
+    if (dto.timing !== undefined) updateData.timing = dto.timing;
     if (dto.language !== undefined) updateData.language = dto.language;
     if (dto.date !== undefined) updateData.date = new Date(dto.date);
     if (dto.isScheduled !== undefined) updateData.isScheduled = dto.isScheduled;

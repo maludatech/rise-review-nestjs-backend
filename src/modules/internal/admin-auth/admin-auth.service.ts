@@ -18,11 +18,17 @@ export class AdminAuthService {
     const hashed = await argon2.hash(password);
     const admin = await this.prisma.admin.create({
       data: { name, email, password: hashed },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     const token = this.signToken(admin.id, email);
-    const { password: _, ...adminData } = admin;
-    return { admin: adminData, token };
+    return { admin, token };
   }
 
   async login(email: string, password: string) {
@@ -33,8 +39,17 @@ export class AdminAuthService {
     if (!valid) throw new BadRequestException('Invalid credentials');
 
     const token = this.signToken(admin.id, email);
-    const { password: _, ...adminData } = admin;
-    return { admin: adminData, token };
+    const safeAdmin = await this.prisma.admin.findUnique({
+      where: { id: admin.id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return { admin: safeAdmin, token };
   }
 
   async getProfile(adminId: number) {

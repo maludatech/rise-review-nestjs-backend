@@ -6,7 +6,11 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { CampaignChannelDto, CampaignTargetGroupDto, CampaignTimingDto } from './create-campaign.dto';
+import {
+  CampaignChannelDto,
+  CampaignTargetGroupDto,
+  CampaignTimingDto,
+} from './create-campaign.dto';
 
 export class UpdateCampaignDto {
   @IsOptional()

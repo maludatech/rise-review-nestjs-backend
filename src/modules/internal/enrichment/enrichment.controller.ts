@@ -10,10 +10,10 @@ export class EnrichmentController {
 
   @Post('trigger')
   @HttpCode(200)
-  async trigger() {
-    this.enrichmentService.enrichPendingLeads().catch((err) =>
-      console.error('Manual enrichment failed:', err),
-    );
+  trigger() {
+    void this.enrichmentService
+      .enrichPendingLeads()
+      .catch((err) => console.error('Manual enrichment failed:', err));
     return { message: 'Enrichment job started in background.' };
   }
 

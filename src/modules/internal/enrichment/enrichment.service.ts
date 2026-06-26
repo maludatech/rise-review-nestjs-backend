@@ -25,7 +25,10 @@ export class EnrichmentService {
       try {
         const result = await fetchGoogleRating(lead.businessName, lead.city);
 
-        if (!result) { skipped++; continue; }
+        if (!result) {
+          skipped++;
+          continue;
+        }
 
         await this.prisma.lead.update({
           where: { id: lead.id },

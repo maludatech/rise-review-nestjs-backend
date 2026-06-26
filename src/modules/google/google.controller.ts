@@ -22,20 +22,25 @@ export class GoogleController {
   async searchBusiness(@Query('query') query: string) {
     if (!query) throw new BadRequestException('query required');
 
-    const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': process.env.GOOGLE_PLACE_API_KEY!,
-        'X-Goog-FieldMask':
-          'places.displayName,places.formattedAddress,places.id,places.googleMapsUri,places.websiteUri,places.rating,places.userRatingCount,places.internationalPhoneNumber',
+    const response = await fetch(
+      'https://places.googleapis.com/v1/places:searchText',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': process.env.GOOGLE_PLACE_API_KEY!,
+          'X-Goog-FieldMask':
+            'places.displayName,places.formattedAddress,places.id,places.googleMapsUri,places.websiteUri,places.rating,places.userRatingCount,places.internationalPhoneNumber',
+        },
+        body: JSON.stringify({ textQuery: query }),
       },
-      body: JSON.stringify({ textQuery: query }),
-    });
+    );
 
     if (!response.ok) {
       const text = await response.text();
-      throw new BadRequestException(`Google API error: ${response.status} - ${text}`);
+      throw new BadRequestException(
+        `Google API error: ${response.status} - ${text}`,
+      );
     }
 
     const data = (await response.json()) as GooglePlacesResponse;
@@ -44,7 +49,9 @@ export class GoogleController {
       name: place.displayName?.text ?? 'Unknown',
       address: place.formattedAddress ?? 'No address',
       placeId: place.id,
-      url: place.googleMapsUri ?? `https://www.google.com/maps/place/?q=place_id:${place.id}`,
+      url:
+        place.googleMapsUri ??
+        `https://www.google.com/maps/place/?q=place_id:${place.id}`,
       website: place.websiteUri ?? null,
       rating: place.rating ?? null,
       userRatingsTotal: place.userRatingCount ?? 0,
