@@ -2,13 +2,13 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreateLeadDto {
   @IsString()
-  businessName: string;
+  businessName!: string;
 
   @IsString()
-  email: string;
+  email!: string;
 
   @IsString()
-  city: string;
+  city!: string;
 
   @IsOptional()
   @IsString()

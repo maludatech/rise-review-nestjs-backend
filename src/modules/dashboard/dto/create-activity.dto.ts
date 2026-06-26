@@ -10,7 +10,7 @@ export class CreateActivityDto {
     'campaign',
     'reservation',
   ])
-  type: string;
+  type!: string;
 
   @IsOptional()
   @IsString()

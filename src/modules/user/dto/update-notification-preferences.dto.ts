@@ -1,9 +1,4 @@
-import {
-  IsBoolean,
-  IsObject,
-  IsOptional,
-  ValidateNested,
-} from 'class-validator';
+import { IsBoolean, IsObject, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class EmailPreferencesDto {
@@ -28,5 +23,5 @@ export class UpdateNotificationPreferencesDto {
   @IsObject()
   @ValidateNested()
   @Type(() => EmailPreferencesDto)
-  email: EmailPreferencesDto;
+  email!: EmailPreferencesDto;
 }

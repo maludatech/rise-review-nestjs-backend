@@ -2,10 +2,10 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CoverManagerDto {
   @IsString()
-  apiKey: string;
+  apiKey!: string;
 
   @IsString()
-  restaurantId: string;
+  restaurantId!: string;
 
   @IsOptional()
   @IsString()

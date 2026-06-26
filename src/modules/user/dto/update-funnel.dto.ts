@@ -2,7 +2,7 @@ import { IsIn, IsOptional, IsString } from 'class-validator';
 
 export class UpdateFunnelDto {
   @IsIn(['whatsapp', 'email'])
-  channel: 'whatsapp' | 'email';
+  channel!: 'whatsapp' | 'email';
 
   @IsOptional()
   @IsString()

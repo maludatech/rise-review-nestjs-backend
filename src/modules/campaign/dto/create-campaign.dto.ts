@@ -35,7 +35,7 @@ export enum CampaignTargetGroupDto {
 export class CreateCampaignDto {
   @IsString()
   @MinLength(1)
-  name: string;
+  name!: string;
 
   @IsOptional()
   @IsEnum(CampaignChannelDto)
@@ -70,13 +70,11 @@ export class CreateCampaignDto {
   @IsBoolean()
   useGPT?: boolean;
 
-  // Required when useGPT is true
   @ValidateIf((o: CreateCampaignDto) => o.useGPT === true)
   @IsString()
   @MinLength(1, { message: 'Tone is required when using GPT.' })
   tone?: string;
 
-  // Required when useGPT is false/undefined
   @ValidateIf((o: CreateCampaignDto) => !o.useGPT)
   @IsString()
   @MinLength(1, { message: 'Message is required when not using GPT.' })

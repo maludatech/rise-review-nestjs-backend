@@ -2,10 +2,10 @@ import { IsObject, IsOptional, IsString } from 'class-validator';
 
 class BusinessDto {
   @IsString()
-  name: string;
+  name!: string;
 
   @IsString()
-  phone: string;
+  phone!: string;
 
   @IsOptional()
   @IsString()
@@ -22,7 +22,7 @@ class BusinessDto {
 
 export class StartVerificationDto {
   @IsObject()
-  business: BusinessDto;
+  business!: BusinessDto;
 
   @IsOptional()
   @IsString()
