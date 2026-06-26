@@ -182,6 +182,7 @@ export class OpenTableService {
       where: { id: userId },
       data: {
         openTableConnected: true,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         onboardingData: JSON.parse(
           JSON.stringify({
             ...onboarding,
