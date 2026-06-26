@@ -165,6 +165,36 @@ export class ReviewRequestService {
     return null;
   }
 
+  async scrapeAndSaveReviewsForAllUsers() {
+    const users = await this.prisma.user.findMany({
+      where: { businessUrl: { not: null } },
+      select: { id: true },
+    });
+
+    for (const user of users) {
+      try {
+        await this.scrapeAndSaveReviews(user.id);
+      } catch (err) {
+        // one user failing shouldn't stop others
+        void err;
+      }
+    }
+  }
+
+  async autoRespondForAllUsers() {
+    const reviews = await this.prisma.review.findMany({
+      where: { responseText: null },
+    });
+
+    for (const review of reviews) {
+      try {
+        await this.autoRespond(review.id, review);
+      } catch (err) {
+        void err;
+      }
+    }
+  }
+
   async scrapeAndSaveReviews(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },

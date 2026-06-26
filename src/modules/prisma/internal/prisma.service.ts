@@ -13,7 +13,7 @@ export class InternalPrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    const pool = new Pool({ connectionString: process.env.INTERNAL_DATABASE_URL });
     const adapter = new PrismaPg(pool);
     super({ adapter });
   }

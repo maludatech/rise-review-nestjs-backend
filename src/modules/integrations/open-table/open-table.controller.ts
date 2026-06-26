@@ -1,8 +1,7 @@
-import { Post, UseGuards } from "@nestjs/common";
-import {PlanGuard} from "../../../common/guards/plan.guard";
-import {RequirePlan} from "../../../common/decorators/require-plan.decorator";
+import { Controller, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
+import { PlanGuard } from '../../../common/guards/plan.guard';
 
-
-@Post('reservations')
+@Controller('rise-review/integrations/open-table')
 @UseGuards(JwtAuthGuard, PlanGuard)
-@RequirePlan('growth')
+export class OpenTableController {}

@@ -7,13 +7,31 @@ export type FunnelMessageSet = {
 export type FunnelChannel = 'email' | 'whatsapp';
 
 export type OnboardingData = {
-  reviewTiming?: 'SEVEN_DAYS' | 'THREE_WEEKS' | 'ONE_MONTH' | 'CUSTOM';
+  reviewTiming?: string;
   funnel?: {
     email?: FunnelMessageSet;
     whatsapp?: FunnelMessageSet;
   };
   businessInfo?: {
     businessName?: string;
+    category?: string;
+    address?: string;
+    country?: string;
+    website?: string;
+    mapsLink?: string;
   };
   platform?: Record<string, unknown>;
+};
+
+export type CoverManagerPlatform = {
+  connected?: boolean;
+  apiKey?: string;
+  restaurantId?: string;
+};
+
+export type OpenTablePlatform = {
+  connected?: boolean;
+  clientId?: string;
+  clientSecret?: string;
+  restaurantId?: string;
 };

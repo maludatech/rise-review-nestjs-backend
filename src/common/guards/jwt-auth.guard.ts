@@ -9,13 +9,13 @@ import { Request } from 'express';
 
 interface AuthRequest extends Request {
   user?: {
-    id: string;
+    id: number;
     role: string;
   };
 }
 
 interface DecodedToken {
-  id: string;
+  id: string | number;
   email: string;
   role?: string;
 }
@@ -40,7 +40,7 @@ export class JwtAuthGuard implements CanActivate {
       ) as DecodedToken;
 
       request.user = {
-        id: decoded.id,
+        id: Number(decoded.id),
         role: decoded.role ?? 'user',
       };
 

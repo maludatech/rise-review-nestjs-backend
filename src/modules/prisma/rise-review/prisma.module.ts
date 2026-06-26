@@ -6,4 +6,4 @@ import { RiseReviewPrismaService } from './prisma.service';
   providers: [RiseReviewPrismaService],
   exports: [RiseReviewPrismaService],
 })
-export class PrismaModule {}
+export class RiseReviewPrismaModule {}
