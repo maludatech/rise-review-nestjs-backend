@@ -112,27 +112,22 @@ export class IntegrationsController {
             'OpenTable clientId, clientSecret and restaurantId required',
           );
         }
-        platformData = { clientId, clientSecret, restaurantId };
 
-        // TODO: test connection when OpenTableService.fetchReservations is implemented
-
-        await this.prisma.user.update({
-          where: { id: user.id },
-          data: {
-            openTableConnected: true,
-            onboardingData: deepClone({
-              ...onboarding,
-              platform: {
-                ...(onboarding.platform ?? {}),
-                openTable: {
-                  ...platformData,
-                  connected: true,
-                  connectedAt: new Date().toISOString(),
-                },
-              },
-            }),
-          },
-        });
+        try {
+          // connect() tests the connection, persists reservations, saves credentials, and sets the flag
+          await this.openTable.connect(
+            user.id,
+            clientId,
+            clientSecret,
+            restaurantId,
+          );
+        } catch (err: unknown) {
+          throw new BadRequestException(
+            err instanceof Error
+              ? err.message
+              : 'Connection failed. Please check your credentials.',
+          );
+        }
         break;
       }
     }
