@@ -1,10 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
-
 const LANGUAGE_NAMES: Record<string, string> = {
   en: 'English',
   es: 'Spanish',
@@ -17,6 +13,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
 @Injectable()
 export class AiService {
   private readonly logger = new Logger(AiService.name);
+  private readonly openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? '' });
 
   async generateCampaignMessage(params: {
     firstName: string;
@@ -57,7 +54,7 @@ No greeting label.
 
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        const completion = await openai.chat.completions.create({
+        const completion = await this.openai.chat.completions.create({
           model: 'gpt-4o-mini',
           messages: [
             {
@@ -104,7 +101,7 @@ Keep messages:
 
   async generateReviewResponse(review: { comment?: string; rating: number }) {
     try {
-      const res = await openai.chat.completions.create({
+      const res = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: [
           {
