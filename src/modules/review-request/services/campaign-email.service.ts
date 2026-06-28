@@ -4,10 +4,10 @@ import React from 'react';
 import { render } from '@react-email/render';
 import CampaignEmail from '../../../../emails/CampaignEmail';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 @Injectable()
 export class CampaignEmailService {
+  private readonly resend = new Resend(process.env.RESEND_API_KEY ?? '');
+
   async sendCampaignEmail(params: {
     businessName: string;
     customerEmail: string;
@@ -28,7 +28,7 @@ export class CampaignEmailService {
       }),
     );
 
-    return resend.emails.send({
+    return this.resend.emails.send({
       from: `${params.businessName} <campaigns@risereview.io>`,
       to: params.customerEmail,
       subject: `Quick question from ${params.businessName}`,
