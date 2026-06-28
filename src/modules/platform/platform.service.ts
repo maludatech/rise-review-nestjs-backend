@@ -10,8 +10,6 @@ type PlatformMap = {
     clientSecret?: string;
     restaurantId?: string;
   };
-  theFork?: { connected?: boolean };
-  doctolib?: { connected?: boolean };
 };
 
 @Injectable()
@@ -37,12 +35,6 @@ export class PlatformService {
       },
       openTable: {
         connected: platforms.openTable?.connected ?? false,
-      },
-      theFork: {
-        connected: platforms.theFork?.connected ?? false,
-      },
-      doctolib: {
-        connected: platforms.doctolib?.connected ?? false,
       },
     };
   }

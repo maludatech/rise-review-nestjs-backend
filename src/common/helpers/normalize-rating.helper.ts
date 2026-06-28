@@ -9,18 +9,14 @@ export function normalizeRating(
 
   switch (p) {
     case 'google':
-    case 'tripadvisor':
     case 'opentable':
-    case 'doctolib':
       return round1(rawRating);
 
     case 'covermanager':
-    case 'thefork':
-    case 'lafourchette':
+      // CoverManager uses a 0–10 scale, normalise to 0–5
       return round1((rawRating / 10) * 5);
 
     default:
-      console.warn(`Unknown platform: ${platform}`);
       return round1(rawRating);
   }
 }
