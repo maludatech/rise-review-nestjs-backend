@@ -133,9 +133,7 @@ smsDailyWindowStart DateTime?
 twilioIntegration Json?
 
   covermanagerConnected Boolean @default(false)
-  theForkConnected Boolean @default(false)
   openTableConnected Boolean @default(false)
-  doctolibConnected Boolean @default(false)
 
   funnelConfigured Boolean @default(false)
   onboardingComplete Boolean @default(false)
