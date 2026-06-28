@@ -1,11 +1,10 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { PlanGuard } from '../../common/guards/plan.guard';
 import { RequirePlan } from '../../common/decorators/require-plan.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserService } from './user.service';
 import { OnboardingService } from './onboarding.service';
-import { SaveOnboardingDto } from './dto/save-onboarding.dto';
 import { StartVerificationDto } from './dto/start-verification.dto';
 import { CheckVerificationDto } from './dto/check-verification.dto';
 
@@ -22,12 +21,10 @@ export class OnboardingController {
   @HttpCode(200)
   async saveOnboarding(
     @CurrentUser() user: { id: number },
-    @Body() dto: SaveOnboardingDto,
+    // Onboarding data is open-ended — bypass forbidNonWhitelisted for this endpoint
+    @Body(new ValidationPipe({ whitelist: false })) body: Record<string, unknown>,
   ) {
-    const onboardingData = await this.userService.saveOnboardingData(
-      user.id,
-      dto,
-    );
+    const onboardingData = await this.userService.saveOnboardingData(user.id, body);
     return { success: true, onboardingData };
   }
 
