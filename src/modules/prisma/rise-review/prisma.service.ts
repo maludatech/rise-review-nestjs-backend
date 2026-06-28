@@ -1,7 +1,11 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '../../../generated/rise-review/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { PrismaNeon } from '@prisma/adapter-neon';
+import { neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
+
+// WebSockets route through port 443 — bypasses ISP port 5432 blocks
+neonConfig.webSocketConstructor = ws;
 
 @Injectable()
 export class RiseReviewPrismaService
@@ -9,10 +13,7 @@ export class RiseReviewPrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
-    const pool = new Pool({
-      connectionString: process.env.RISE_REVIEW_DATABASE_URL,
-    });
-    const adapter = new PrismaPg(pool);
+    const adapter = new PrismaNeon({ connectionString: process.env.RISE_REVIEW_DATABASE_URL! });
     super({ adapter });
   }
 
