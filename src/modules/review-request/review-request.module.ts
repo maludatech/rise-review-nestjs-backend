@@ -15,6 +15,6 @@ import { EmailModule } from '../email/email.module';
     AiService,
     ScraperService,
   ],
-  exports: [ReviewRequestService, WhatsAppService],
+  exports: [ReviewRequestService, WhatsAppService, AiService, CampaignEmailService],
 })
 export class ReviewRequestModule {}
