@@ -1,61 +1,65 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 
-interface GooglePlace {
-  displayName?: { text?: string };
-  formattedAddress?: string;
-  id?: string;
-  googleMapsUri?: string;
-  websiteUri?: string;
-  rating?: number;
-  userRatingCount?: number;
-  internationalPhoneNumber?: string;
-}
-
-interface GooglePlacesResponse {
-  places?: GooglePlace[];
+interface FindPlaceResponse {
+  candidates?: {
+    place_id?: string;
+    name?: string;
+    formatted_address?: string;
+    geometry?: { location?: { lat?: number; lng?: number } };
+    rating?: number;
+    user_ratings_total?: number;
+    website?: string;
+    international_phone_number?: string;
+  }[];
+  status?: string;
 }
 
 // Public endpoint — used during onboarding to look up a business
+// Uses classic Places API (findplacefromtext) — no billing required
 @Controller('rise-review/google')
 export class GoogleController {
   @Get('search')
   async searchBusiness(@Query('query') query: string) {
     if (!query) throw new BadRequestException('query required');
 
-    const response = await fetch(
-      'https://places.googleapis.com/v1/places:searchText',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Goog-Api-Key': process.env.GOOGLE_PLACE_API_KEY!,
-          'X-Goog-FieldMask':
-            'places.displayName,places.formattedAddress,places.id,places.googleMapsUri,places.websiteUri,places.rating,places.userRatingCount,places.internationalPhoneNumber',
-        },
-        body: JSON.stringify({ textQuery: query }),
-      },
+    const apiKey = process.env.GOOGLE_API_KEY;
+    if (!apiKey) throw new BadRequestException('Google API key not configured');
+
+    const url = new URL(
+      'https://maps.googleapis.com/maps/api/place/findplacefromtext/json',
     );
+    url.searchParams.set('input', query);
+    url.searchParams.set('inputtype', 'textquery');
+    url.searchParams.set(
+      'fields',
+      'place_id,name,formatted_address,geometry,rating,user_ratings_total,website,international_phone_number',
+    );
+    url.searchParams.set('key', apiKey);
+
+    const response = await fetch(url.toString());
 
     if (!response.ok) {
       const text = await response.text();
-      throw new BadRequestException(
-        `Google API error: ${response.status} - ${text}`,
-      );
+      throw new BadRequestException(`Google API error: ${response.status} - ${text}`);
     }
 
-    const data = (await response.json()) as GooglePlacesResponse;
+    const data = (await response.json()) as FindPlaceResponse;
 
-    const results = (data.places ?? []).map((place) => ({
-      name: place.displayName?.text ?? 'Unknown',
-      address: place.formattedAddress ?? 'No address',
-      placeId: place.id,
-      url:
-        place.googleMapsUri ??
-        `https://www.google.com/maps/place/?q=place_id:${place.id}`,
-      website: place.websiteUri ?? null,
+    if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
+      throw new BadRequestException(`Google API status: ${data.status}`);
+    }
+
+    const results = (data.candidates ?? []).map((place) => ({
+      name: place.name ?? 'Unknown',
+      address: place.formatted_address ?? 'No address',
+      placeId: place.place_id,
+      url: place.place_id
+        ? `https://www.google.com/maps/place/?q=place_id:${place.place_id}`
+        : null,
+      website: place.website ?? null,
       rating: place.rating ?? null,
-      userRatingsTotal: place.userRatingCount ?? 0,
-      internationalPhone: place.internationalPhoneNumber ?? null,
+      userRatingsTotal: place.user_ratings_total ?? 0,
+      internationalPhone: place.international_phone_number ?? null,
     }));
 
     return { success: true, data: results };
