@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY as string;
-
 type FindPlaceResponse = {
   candidates?: {
     place_id?: string;
@@ -24,7 +22,9 @@ export const fetchGoogleRating = async (
   totalReviews: number | null;
   googlePlaceId: string | null;
 } | null> => {
-  if (!GOOGLE_API_KEY) {
+  const apiKey = process.env.GOOGLE_API_KEY;
+
+  if (!apiKey) {
     console.warn('⚠️ Missing GOOGLE_API_KEY');
     return null;
   }
@@ -40,7 +40,7 @@ export const fetchGoogleRating = async (
           input: query,
           inputtype: 'textquery',
           fields: 'place_id,name',
-          key: GOOGLE_API_KEY,
+          key: apiKey,
         },
       },
     );
@@ -59,7 +59,7 @@ export const fetchGoogleRating = async (
         params: {
           place_id: candidate.place_id,
           fields: 'rating,user_ratings_total',
-          key: GOOGLE_API_KEY,
+          key: apiKey,
         },
       },
     );
