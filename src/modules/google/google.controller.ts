@@ -30,10 +30,8 @@ export class GoogleController {
     );
     url.searchParams.set('input', query);
     url.searchParams.set('inputtype', 'textquery');
-    url.searchParams.set(
-      'fields',
-      'place_id,name,formatted_address,geometry,rating,user_ratings_total,website,international_phone_number',
-    );
+    // Basic fields only — no billing required
+    url.searchParams.set('fields', 'place_id,name,formatted_address,geometry');
     url.searchParams.set('key', apiKey);
 
     const response = await fetch(url.toString());
@@ -56,10 +54,6 @@ export class GoogleController {
       url: place.place_id
         ? `https://www.google.com/maps/place/?q=place_id:${place.place_id}`
         : null,
-      website: place.website ?? null,
-      rating: place.rating ?? null,
-      userRatingsTotal: place.user_ratings_total ?? 0,
-      internationalPhone: place.international_phone_number ?? null,
     }));
 
     return { success: true, data: results };
